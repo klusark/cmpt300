@@ -22,7 +22,7 @@ class Monitor{
         void signal(condition cond);
         void EnterMonitor();
         void LeaveMonitor();
-void InitializeCondition(condition &c);
+        void InitializeCondition(condition &c);
     protected:
         /*The pthreads implementation of condition variables, 
          *pthread_cond_t, requires that each condition variable be

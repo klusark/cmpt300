@@ -16,7 +16,7 @@ using namespace std;
 Monitor::Monitor(){
     pthread_mutex_init(&occupied, NULL);
 }
-Monitor::InitializeCondition(condition &c){
+void Monitor::InitializeCondition(condition &c){
     pthread_cond_init(c, NULL);
 }
 
