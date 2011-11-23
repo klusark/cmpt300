@@ -16,6 +16,9 @@ using namespace std;
 Monitor::Monitor(){
     pthread_mutex_init(&occupied, NULL);
 }
+Monitor::InitializeCondition(condition &c){
+    pthread_cond_init(c, NULL);
+}
 
 /*
  * wait(condition cond).
@@ -25,6 +28,7 @@ Monitor::Monitor(){
  * passed to wait, it is initialized and associated with a mutex.
  */
 void Monitor::wait(condition &cond){
+    /*
     if(!condMutexes.count(cond)){
         cond = new pthread_cond_t();
         pthread_cond_init(cond, NULL);
@@ -32,12 +36,14 @@ void Monitor::wait(condition &cond){
         pthread_mutex_init(mut, NULL);
         condMutexes.insert(pair<condition, pthread_mutex_t*>(cond, mut)); 
     }
-    pthread_mutex_unlock(&occupied);
+    */
+    //pthread_mutex_unlock(&occupied);
     int ret;
-    if((ret = pthread_cond_wait(cond, condMutexes[cond]))){
+    //if((ret = pthread_cond_wait(cond, condMutexes[cond]))){
+    if((ret = pthread_cond_wait(cond, &occupied))){
         printf ("wait failed with %d\n", ret);
     }
-    pthread_mutex_lock(&occupied);
+    //pthread_mutex_lock(&occupied);
 }
 
 /*
@@ -47,9 +53,10 @@ void Monitor::wait(condition &cond){
  *
  */
 void Monitor::signal(condition cond){
-    pthread_mutex_lock(condMutexes[cond]);
+    //pthread_mutex_lock(condMutexes[cond]);
     pthread_cond_broadcast(cond);
-    pthread_mutex_unlock(condMutexes[cond]);
+    pthread_mutex_unlock(&occupied);
+    //pthread_mutex_unlock(condMutexes[cond]);
 }
 
 /*

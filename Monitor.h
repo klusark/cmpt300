@@ -22,13 +22,14 @@ class Monitor{
         void signal(condition cond);
         void EnterMonitor();
         void LeaveMonitor();
+void InitializeCondition(condition &c);
     protected:
         /*The pthreads implementation of condition variables, 
          *pthread_cond_t, requires that each condition variable be
          *associated with a mutex. This association is kept track of using
          *a map.
          */
-        std::map<condition, pthread_mutex_t*> condMutexes;
+    //    std::map<condition, pthread_mutex_t*> condMutexes;
     private:
         /*The occupied mutex ensures that only one process is present in the
          *mutex at one time.
