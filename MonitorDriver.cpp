@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <cstdlib>
 #include <ctime>
+#include <unistd.h>
 static int NUM_THREADS = 15;
 static int NUM_WORK_THREADS =1;
 using namespace std;
