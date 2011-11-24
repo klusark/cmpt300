@@ -56,7 +56,7 @@ void Monitor::wait(condition &cond){
 void Monitor::signal(condition cond){
     //pthread_mutex_lock(condMutexes[cond]);
     pthread_cond_broadcast(cond);
-    pthread_mutex_unlock(&occupied);
+    //pthread_mutex_unlock(&occupied);
     //pthread_mutex_unlock(condMutexes[cond]);
 }
 
