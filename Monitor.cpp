@@ -40,7 +40,6 @@ void Monitor::timedwait(condition &cond, int t){
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
     ts.tv_sec += t;
-    int ret;
     pthread_cond_timedwait(cond, occupied, &ts);
 }
 

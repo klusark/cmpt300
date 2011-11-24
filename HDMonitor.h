@@ -15,15 +15,12 @@
  *
  */
 
-#ifndef HDMONITOR_H
-#define HDMONITOR_H
+#ifndef HD_MONITOR_H
+#define HD_MONITOR_H
 #include "Monitor.h"
 #include <list>      //for request list
 #include <ctime>     //for request time
 
-//Helper functions for the complex comparison operator (elevator algorithm)
-int dist(int a, int b){ return a < b ? b - a : a - b;}
-int delta(int a, int b) { return b - a;}
 const int WAIT_FOR_X_REQUESTS = 5;
 const int WAIT_X_SECONDS = 1;
 class HDMonitor; //forward declaration
@@ -39,6 +36,8 @@ class request {
         time_t tor; //Time of Request
         int duration;
         condition &c;
+        static int dist(int a, int b){ return a < b ? b - a : a - b;}
+        static int delta(int a, int b) { return b - a;}
         request(int atrack, time_t ator, int aduration, HDMonitor *aHD, condition &ac):c (ac){
             track = atrack;
             tor = ator;
@@ -73,13 +72,14 @@ class HDMonitor : protected Monitor{
          * Creates a new request to the hard drive, and is put on the queue for
          * scheduling.
          */
-	void Request(int track, int duration, int & N);
+	void Request(int track, int duration);
         /*
          * DoNextJob().
          * Selects the next job from the list based on the scheduling rule.
          *
          */
         void DoNextJob();
+        void NumberOfRequests(int &N);
         friend class request; //Allow request to access currentTrack
     private:
         int numWaitingToWork;
