@@ -34,6 +34,6 @@ class Monitor{
         /*The occupied mutex ensures that only one process is present in the
          *mutex at one time.
          */
-        pthread_mutex_t occupied;
+        pthread_mutex_t *occupied;
 };
 #endif

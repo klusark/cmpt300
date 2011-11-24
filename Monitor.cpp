@@ -14,7 +14,8 @@
 #include <cstdio>
 using namespace std;
 Monitor::Monitor(){
-    pthread_mutex_init(&occupied, NULL);
+    occupied = new pthread_mutex_t();
+    pthread_mutex_init(occupied, NULL);
 }
 void Monitor::InitializeCondition(condition &c){
     c = new pthread_cond_t();
@@ -41,7 +42,7 @@ void Monitor::wait(condition &cond){
     //pthread_mutex_unlock(&occupied);
     int ret;
     //if((ret = pthread_cond_wait(cond, condMutexes[cond]))){
-    if((ret = pthread_cond_wait(cond, &occupied))){
+    if((ret = pthread_cond_wait(cond, occupied))){
         printf ("wait failed with %d\n", ret);
     }
     //pthread_mutex_lock(&occupied);
@@ -67,7 +68,7 @@ void Monitor::signal(condition cond){
  * and enables faking the Monitor construct in C++.
  */
 void Monitor::EnterMonitor(){
-    pthread_mutex_lock(&occupied);
+    while(pthread_mutex_trylock(occupied));
 }
 
 /*
@@ -76,5 +77,8 @@ void Monitor::EnterMonitor(){
  *
  */
 void Monitor::LeaveMonitor(){
-    pthread_mutex_unlock(&occupied);
+    int ret;
+    if((ret = pthread_mutex_unlock(occupied))){
+        printf("Mutex unlock returned an error: $d\n", ret);
+    }
 }

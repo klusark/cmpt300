@@ -20,15 +20,15 @@ int main(int argc, char *argv[]){
     int rc;
     long t;
     void* status;
-    for(t=0; t < NUM_THREADS ; t++){
-      rc = pthread_create(&threads[t], NULL, Schedule,  &M);
+    for(t=0; t < NUM_WORK_THREADS ; t++){
+      rc = pthread_create(&threads[t], NULL, DoNext,  &M);
       if (rc){
          printf("ERROR; return code from pthread_create() is %d\n", rc);
          exit(-1);
       }
     }
-    for(t=NUM_THREADS; t<NUM_THREADS + NUM_WORK_THREADS ; t++){
-      rc = pthread_create(&threads[t], NULL, DoNext, & M);
+    for(t=NUM_WORK_THREADS; t<NUM_THREADS + NUM_WORK_THREADS ; t++){
+      rc = pthread_create(&threads[t], NULL, Schedule, & M);
       if (rc){
          printf("ERROR; return code from pthread_create() is %d\n", rc);
          exit(-1);

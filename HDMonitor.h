@@ -74,6 +74,8 @@ class HDMonitor : protected Monitor{
             currentTrack = 1;
             numTracks = 0;
             jobsList = new std::list<request>();
+            areRequests = new pthread_cond_t();
+            pthread_cond_init(areRequests, NULL);
         }
         HDMonitor(int N){
             numWaitingToWork = 0;
@@ -81,7 +83,9 @@ class HDMonitor : protected Monitor{
             currentTrack = 1;
             numTracks = N;
             jobsList = new std::list<request>();
-            InitializeCondition(areRequests);
+            //InitializeCondition(areRequests);
+            areRequests = new pthread_cond_t();
+            pthread_cond_init(areRequests, NULL);
         }
         ~HDMonitor(){
             delete jobsList;
@@ -96,10 +100,13 @@ class HDMonitor : protected Monitor{
             EnterMonitor();
             int before = jobsList->size();
             condition c;
+            InitializeCondition(c);
             request r(track, time(NULL), duration, this, c);
             jobsList->push_back(r);
             printf("Just pushed track %d for %d microseconds\n", track, duration);
-            if(jobsList->size() && !before && numWaitingToWork) signal(areRequests);
+            if(jobsList->size() && !before && numWaitingToWork) {
+                signal(areRequests);
+            }
             while(find(jobsList->begin(), jobsList->end(), r) !=
                 jobsList->end()){
                 wait(c);
