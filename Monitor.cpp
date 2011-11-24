@@ -11,6 +11,7 @@
  */
 #include "Monitor.h"
 #include <pthread.h>
+#include <ctime>
 #include <cstdio>
 using namespace std;
 Monitor::Monitor(){
@@ -30,22 +31,17 @@ void Monitor::InitializeCondition(condition &c){
  * passed to wait, it is initialized and associated with a mutex.
  */
 void Monitor::wait(condition &cond){
-    /*
-    if(!condMutexes.count(cond)){
-        cond = new pthread_cond_t();
-        pthread_cond_init(cond, NULL);
-        pthread_mutex_t *mut = new pthread_mutex_t();
-        pthread_mutex_init(mut, NULL);
-        condMutexes.insert(pair<condition, pthread_mutex_t*>(cond, mut)); 
-    }
-    */
-    //pthread_mutex_unlock(&occupied);
     int ret;
-    //if((ret = pthread_cond_wait(cond, condMutexes[cond]))){
     if((ret = pthread_cond_wait(cond, occupied))){
         printf ("wait failed with %d\n", ret);
     }
-    //pthread_mutex_lock(&occupied);
+}
+void Monitor::timedwait(condition &cond, int t){
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    ts.tv_sec += t;
+    int ret;
+    pthread_cond_timedwait(cond, occupied, &ts);
 }
 
 /*

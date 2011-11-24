@@ -23,11 +23,12 @@
 #include <list>      //for request list
 #include <ctime>     //for request time
 #include <unistd.h>  //for usleep
+#include <ctime>
 
 //Helper functions for the complex comparison operator (elevator algorithm)
 int dist(int a, int b){ return a < b ? b - a : a - b;}
 int delta(int a, int b) { return b - a;}
-
+const int WAIT_FOR_X_REQUESTS = 5;
 class HDMonitor; //forward declaration
 /*
  * request
@@ -104,7 +105,8 @@ class HDMonitor : protected Monitor{
             request r(track, time(NULL), duration, this, c);
             jobsList->push_back(r);
             printf("Just pushed track %d for %d microseconds\n", track, duration);
-            if(jobsList->size() && !before && numWaitingToWork) {
+            if(numWaitingToWork && jobsList->size() == WAIT_FOR_X_REQUESTS){
+            //if(jobsList->size() && !before && numWaitingToWork) {
                 signal(areRequests);
             }
             while(find(jobsList->begin(), jobsList->end(), r) !=
@@ -127,7 +129,8 @@ class HDMonitor : protected Monitor{
                 //that has been inactive for some time.
                 while(!jobsList->size()){
                     printf("going to wait\n");
-                    wait(areRequests);
+                    //wait(areRequests);
+                    timedwait(areRequests, WAIT_FOR_X_REQUESTS);
                 }
                 --numWaitingToWork;
             }

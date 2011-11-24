@@ -19,6 +19,7 @@ class Monitor{
         //Constructor
         Monitor();
         void wait(condition &cond);
+        void timedwait(condition &cond, int t);
         void signal(condition cond);
         void EnterMonitor();
         void LeaveMonitor();
