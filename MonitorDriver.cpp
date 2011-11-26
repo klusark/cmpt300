@@ -9,6 +9,8 @@ static int NUM_THREADS = 100;
 static int NUM_WORK_THREADS = 1;
 using namespace std;
 
+pthread_mutex_t readmutex;
+
 void *Schedule(void* Mon);
 void *DoNext(void* Mon);
 int main(int argc, char *argv[]){
@@ -21,6 +23,9 @@ int main(int argc, char *argv[]){
     int rc;
     long t;
     void* status;
+
+    pthread_mutex_init(&readmutex, 0);
+
     for(t=0; t < NUM_WORK_THREADS ; t++){
       rc = pthread_create(&threads[t], NULL, DoNext,  &M);
       if (rc){
@@ -47,13 +52,17 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
+
 void* Schedule(void* Mon){
     int track, duration;
     FILE* TimingFP = fopen("TimePerRequest.txt", "w");
     fclose(TimingFP);
     HDMonitor* M = (HDMonitor*) Mon;
     while(true){
-        if( scanf("%d %d", &track, &duration) == 2){
+	pthread_mutex_lock(&readmutex);
+	int ret = scanf("%d %d", &track, &duration);
+	pthread_mutex_unlock(&readmutex);
+        if( ret == 2){
             clock_t start = clock();
             M->Request(track, duration);
             int N;
