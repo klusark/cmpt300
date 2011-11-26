@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
+#include <map>
 #define WAIT_TIME 1
 static int NUM_THREADS = 100;
 static int NUM_WORK_THREADS = 1;
@@ -24,7 +25,6 @@ int main(int argc, char *argv[]){
     int rc;
     long t;
     void* status;
-
     pthread_mutex_init(&readmutex, 0);
 
     for(t=0; t < NUM_WORK_THREADS ; t++){
@@ -65,11 +65,11 @@ void* Schedule(void* Mon){
 	pthread_mutex_unlock(&readmutex);
         if( ret == 2){
             clock_t start = clock();
-            M->Request(track, duration);
             int N;
-            M->NumberOfRequests(N);
+            M->Request(track, duration, N);
+            //M->NumberOfRequests(N);
             TimingFP = fopen("TimePerRequest.txt", "a");
-            fprintf(TimingFP, "%d %8.4f\n", N+1, (clock()/(double)CLOCKS_PER_SEC) -
+            fprintf(TimingFP, "%d %16.14f\n", N, (clock()/(double)CLOCKS_PER_SEC) -
                                         start/(double)CLOCKS_PER_SEC);
 
             fclose(TimingFP);

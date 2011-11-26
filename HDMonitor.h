@@ -20,9 +20,10 @@
 #include "Monitor.h"
 #include <list>      //for request list
 #include <ctime>     //for request time
+#include <map>
 #include "Request.h"
 
-const int WAIT_FOR_X_REQUESTS = 5;
+const int WAIT_FOR_X_REQUESTS = 1;
 const int WAIT_X_NSECONDS = 1000000;
 
 class RequestWrap {
@@ -53,7 +54,7 @@ class HDMonitor : protected Monitor{
          * Creates a new request to the hard drive, and is put on the queue for
          * scheduling.
          */
-	void Request(int track, int duration);
+	void Request(int track, int duration, int &numRequests);
         /*
          * DoNextJob().
          * Selects the next job from the list based on the scheduling rule.
@@ -68,5 +69,7 @@ class HDMonitor : protected Monitor{
         int currentTrack; //track that read/write head is on [1, N]
         int numTracks; // Equal to N
         RequestList jobsList;
+        std::map<request*, int> NumAtRequestComplete;
 };
 #endif
+

@@ -49,15 +49,17 @@ HDMonitor::~HDMonitor(){
  * Creates a new request to the hard drive, and is put on the queue for
  * scheduling.
  */
-void HDMonitor::Request(int track, int duration){
+void HDMonitor::Request(int track, int duration, int &numRequests){
     EnterMonitor();
     int before = jobsList.size();
     condition c;
     InitializeCondition(c);
     request *r = new SSTF(track, time(NULL), duration, this, c);
+
     RequestWrap wrap;
     wrap.r = r;
     jobsList.push_back(wrap);
+    NumAtRequestComplete.insert(pair<request*,int>(r, 0));
     //printf("The size was %d\n", jobsList->size() +1);
     //printf("Just pushed track %d for %d microseconds\n", track, duration);
     if(numWaitingToWork && jobsList.size() >= WAIT_FOR_X_REQUESTS){
@@ -69,6 +71,8 @@ void HDMonitor::Request(int track, int duration){
         timedwait(c, WAIT_X_NSECONDS);
     }
     //printf("The size is %d\n", jobsList->size() +1);
+    numRequests = NumAtRequestComplete[r];
+    NumAtRequestComplete.erase(r);
     LeaveMonitor();
 }
 /*
@@ -101,6 +105,7 @@ void HDMonitor::DoNextJob(){
     }
     currentTrack = r->track;
     //printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
+    NumAtRequestComplete[r] = jobsList.size();
     int sleepytime = r->duration;
     jobsList.erase(nextRequest);
     signal(r->c);
