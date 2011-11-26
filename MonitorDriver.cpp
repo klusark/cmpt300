@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
      printf("ERROR; return code from pthread_create() is %d\n", rc);
      exit(-1);
     }
-    for(t = 0; t < NUM_THREADS + NUM_WORK_THREADS; ++t){
+    for(t = NUM_WORK_THREADS; t < NUM_THREADS + NUM_WORK_THREADS; ++t){
         rc = pthread_join(threads[t], &status);
     }
     return 0;
@@ -76,7 +76,9 @@ void* Schedule(void* Mon){
 
             fclose(TimingFP);
             usleep(rand() % WAIT_TIME);
-        }
+        } else if (ret = EOF) {
+		break;
+	}
     }
 }
 void* DoNext(void* Mon){
