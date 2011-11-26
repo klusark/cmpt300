@@ -103,9 +103,9 @@ void HDMonitor::DoNextJob(){
     //printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
     int sleepytime = r->duration;
     jobsList->erase(nextRequest);
+    signal(r->c);
     delete r;
     usleep(sleepytime); //Do some "work"
-    signal(r->c);
     LeaveMonitor();
 }
 
