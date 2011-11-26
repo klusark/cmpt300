@@ -68,8 +68,6 @@ void* Schedule(void* Mon){
             M->Request(track, duration);
             int N;
             M->NumberOfRequests(N);
-            //printf("Request took %8.4f seconds on %d elements\n", (clock()/(double)CLOCKS_PER_SEC) -
-            //(start/CLOCKS_PER_SEC), N);
             TimingFP = fopen("TimePerRequest.txt", "a");
             fprintf(TimingFP, "%d %8.4f\n", N+1, (clock()/(double)CLOCKS_PER_SEC) -
                                         start/(double)CLOCKS_PER_SEC);
