@@ -22,6 +22,9 @@
 #include <list>      //for request list
 #include <ctime>     //for request time
 #include <unistd.h>
+
+#include "SSTF.h"
+
 using namespace std;
 
 /*
@@ -33,7 +36,7 @@ HDMonitor::HDMonitor(int N){
     direction = 1;
     currentTrack = 1;
     numTracks = N;
-    jobsList = new std::list<request>();
+    jobsList = new RequestList();
     //InitializeCondition(areRequests);
     areRequests = new pthread_cond_t();
     pthread_cond_init(areRequests, NULL);
@@ -52,7 +55,7 @@ void HDMonitor::Request(int track, int duration){
     int before = jobsList->size();
     condition c;
     InitializeCondition(c);
-    request r(track, time(NULL), duration, this, c);
+    request *r = new SSTF(track, time(NULL), duration, this, c);
     jobsList->push_back(r);
     printf("The size was %d\n", jobsList->size() +1);
     printf("Just pushed track %d for %d microseconds\n", track, duration);
@@ -86,19 +89,22 @@ void HDMonitor::DoNextJob(){
         --numWaitingToWork;
     }
     //get next job
-    std::list<request>::iterator nextRequest = min_element(jobsList->begin(), jobsList->end());
+    RequestList::iterator nextRequest = min_element(jobsList->begin(), jobsList->end());
+    request *r = *nextRequest;
     //change direction if necessary
-    if((direction == -1 && nextRequest->track > currentTrack) || 
-       (direction == 1  && nextRequest->track < currentTrack)) {
+    if((direction == -1 && r->track > currentTrack) || 
+       (direction == 1  && r->track < currentTrack)) {
         direction *= -1;
         nextRequest = min_element(jobsList->begin(), jobsList->end());
+	r = *nextRequest;
     }
-    currentTrack = nextRequest->track;
-    printf("Working on track %d for %d micro seconds\n", nextRequest->track, nextRequest->duration);
-    int sleepytime = nextRequest->duration;
+    currentTrack = r->track;
+    printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
+    int sleepytime = r->duration;
     jobsList->erase(nextRequest);
+    delete r;
     usleep(sleepytime); //Do some "work"
-    signal(nextRequest->c);
+    signal(r->c);
     LeaveMonitor();
 }
 
@@ -113,25 +119,4 @@ void HDMonitor::DoNextJob(){
     LeaveMonitor();
  }
 
-/*
- * Implement the < operator for requests.
- */
-bool request::operator< (const request & r) const{
-    switch(H->direction){
-        case 1:
-            return ( request::dist(H->currentTrack, track) < request::dist(H->currentTrack, r.track) &&
-                     request::delta(H->currentTrack, track) >= 0 ) ||
-                   ( track == r.track && request::delta(H->currentTrack, track) >= 0 &&
-                     tor < r.tor);
-           break;
-        case -1:
-            return ( request::dist(H->currentTrack, track) < request::dist(H->currentTrack, r.track) &&
-                     request::delta(H->currentTrack, track) <= 0) ||
-                   ( track == r.track && request::delta(H->currentTrack, track) <= 0 &&
-                     tor < r.tor);
-       break;
-       default:
-            return false;
-            break;
-    }
-}
+

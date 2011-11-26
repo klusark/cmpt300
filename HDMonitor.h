@@ -20,42 +20,13 @@
 #include "Monitor.h"
 #include <list>      //for request list
 #include <ctime>     //for request time
+#include "Request.h"
 
 const int WAIT_FOR_X_REQUESTS = 5;
 const int WAIT_X_SECONDS = 1;
 class HDMonitor; //forward declaration
-/*
- * request
- * The HDMonitor encapsulates an IO request as an instance of the request class,
- * and maintains a list of these objects. 
- *
- */
-class request {
-    public:
-        int track;
-        time_t tor; //Time of Request
-        int duration;
-        condition &c;
-        static int dist(int a, int b){ return a < b ? b - a : a - b;}
-        static int delta(int a, int b) { return b - a;}
-        request(int atrack, time_t ator, int aduration, HDMonitor *aHD, condition &ac):c (ac){
-            track = atrack;
-            tor = ator;
-            duration = aduration;
-            H = aHD; //The comparison operator needs the currentTrack from H
-        }
-        /*
-         * operator<
-         * This is required to find the next request.
-         */
-       bool operator< (const request & r) const;
-       bool operator==(const request & r) const{
-            return track == r.track && tor == r.tor && duration == r.duration && H
-            == r.H && c == r.c;
-       }
-        private:
-            HDMonitor *H;
-};
+
+typedef std::list<request *> RequestList;
 /*
  * HDMonitor (Hard Drive Monitor)
  *
@@ -81,11 +52,11 @@ class HDMonitor : protected Monitor{
         void DoNextJob();
         void NumberOfRequests(int &N);
         friend class request; //Allow request to access currentTrack
-    private:
+//    private:
         int numWaitingToWork;
         int direction; //direction of read/write head {-1, 1}
         int currentTrack; //track that read/write head is on [1, N]
         int numTracks; // Equal to N
-        std::list<request>  *jobsList;
+        RequestList  *jobsList;
 };
 #endif
