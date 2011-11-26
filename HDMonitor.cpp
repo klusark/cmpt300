@@ -66,7 +66,7 @@ void HDMonitor::Request(int track, int duration){
     }
     while(find(jobsList.begin(), jobsList.end(), r) !=
         jobsList.end()){
-        wait(c);
+        timedwait(c, WAIT_X_NSECONDS);
     }
     //printf("The size is %d\n", jobsList->size() +1);
     LeaveMonitor();
@@ -100,7 +100,7 @@ void HDMonitor::DoNextJob(){
 	r = nextRequest->r;
     }
     currentTrack = r->track;
-    //printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
+    printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
     int sleepytime = r->duration;
     jobsList.erase(nextRequest);
     signal(r->c);
