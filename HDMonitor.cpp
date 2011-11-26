@@ -59,7 +59,7 @@ void HDMonitor::Request(int track, int duration){
     wrap.r = r;
     jobsList.push_back(wrap);
     //printf("The size was %d\n", jobsList->size() +1);
-    printf("Just pushed track %d for %d microseconds\n", track, duration);
+    //printf("Just pushed track %d for %d microseconds\n", track, duration);
     if(numWaitingToWork && jobsList.size() >= WAIT_FOR_X_REQUESTS){
     //if(jobsList->size() && !before && numWaitingToWork) {
         signal(areRequests);
@@ -83,7 +83,7 @@ void HDMonitor::DoNextJob(){
         //The loop is necessary, or else pthreads will wake up a thread
         //that has been inactive for some time.
         while(!jobsList.size()){
-            printf("going to wait\n");
+            //printf("going to wait\n");
             //wait(areRequests);
             timedwait(areRequests, WAIT_X_NSECONDS);
         }
@@ -100,12 +100,13 @@ void HDMonitor::DoNextJob(){
 	r = nextRequest->r;
     }
     currentTrack = r->track;
-    printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
+    //printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
     int sleepytime = r->duration;
     jobsList.erase(nextRequest);
     signal(r->c);
     delete r;
-    usleep(sleepytime); //Do some "work"
+    usleep(1);
+    //usleep(sleepytime); //Do some "work"
     LeaveMonitor();
 }
 

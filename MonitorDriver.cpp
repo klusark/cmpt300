@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
-#define WAIT_TIME 10000
+#define WAIT_TIME 1
 static int NUM_THREADS = 100;
 static int NUM_WORK_THREADS = 1;
 using namespace std;
