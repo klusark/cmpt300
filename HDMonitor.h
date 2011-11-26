@@ -67,6 +67,6 @@ class HDMonitor : protected Monitor{
         int direction; //direction of read/write head {-1, 1}
         int currentTrack; //track that read/write head is on [1, N]
         int numTracks; // Equal to N
-        RequestList  *jobsList;
+        RequestList jobsList;
 };
 #endif

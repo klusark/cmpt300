@@ -37,13 +37,11 @@ HDMonitor::HDMonitor(int N){
     direction = 1;
     currentTrack = 1;
     numTracks = N;
-    jobsList = new RequestList();
     //InitializeCondition(areRequests);
     areRequests = new pthread_cond_t();
     pthread_cond_init(areRequests, NULL);
 }
 HDMonitor::~HDMonitor(){
-    delete jobsList;
 }
 
 /*
@@ -53,21 +51,21 @@ HDMonitor::~HDMonitor(){
  */
 void HDMonitor::Request(int track, int duration){
     EnterMonitor();
-    int before = jobsList->size();
+    int before = jobsList.size();
     condition c;
     InitializeCondition(c);
     request *r = new SSTF(track, time(NULL), duration, this, c);
     RequestWrap wrap;
     wrap.r = r;
-    jobsList->push_back(wrap);
+    jobsList.push_back(wrap);
     //printf("The size was %d\n", jobsList->size() +1);
     printf("Just pushed track %d for %d microseconds\n", track, duration);
-    if(numWaitingToWork && jobsList->size() >= WAIT_FOR_X_REQUESTS){
+    if(numWaitingToWork && jobsList.size() >= WAIT_FOR_X_REQUESTS){
     //if(jobsList->size() && !before && numWaitingToWork) {
         signal(areRequests);
     }
-    while(find(jobsList->begin(), jobsList->end(), r) !=
-        jobsList->end()){
+    while(find(jobsList.begin(), jobsList.end(), r) !=
+        jobsList.end()){
         wait(c);
     }
     //printf("The size is %d\n", jobsList->size() +1);
@@ -80,11 +78,11 @@ void HDMonitor::Request(int track, int duration){
  */
 void HDMonitor::DoNextJob(){
     EnterMonitor();
-    if(!jobsList->size()) { //wait until requests are available
+    if(!jobsList.size()) { //wait until requests are available
         ++numWaitingToWork;
         //The loop is necessary, or else pthreads will wake up a thread
         //that has been inactive for some time.
-        while(!jobsList->size()){
+        while(!jobsList.size()){
             printf("going to wait\n");
             //wait(areRequests);
             timedwait(areRequests, WAIT_X_NSECONDS);
@@ -92,19 +90,19 @@ void HDMonitor::DoNextJob(){
         --numWaitingToWork;
     }
     //get next job
-    RequestList::iterator nextRequest = min_element(jobsList->begin(), jobsList->end());
+    RequestList::iterator nextRequest = min_element(jobsList.begin(), jobsList.end());
     request *r = nextRequest->r;
     //change direction if necessary
     if((direction == -1 && r->track > currentTrack) || 
        (direction == 1  && r->track < currentTrack)) {
         direction *= -1;
-        nextRequest = min_element(jobsList->begin(), jobsList->end());
+        nextRequest = min_element(jobsList.begin(), jobsList.end());
 	r = nextRequest->r;
     }
     currentTrack = r->track;
     //printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
     int sleepytime = r->duration;
-    jobsList->erase(nextRequest);
+    jobsList.erase(nextRequest);
     signal(r->c);
     delete r;
     usleep(sleepytime); //Do some "work"
@@ -118,7 +116,7 @@ void HDMonitor::DoNextJob(){
  */
  void HDMonitor::NumberOfRequests(int & N){
     EnterMonitor();
-    N = jobsList->size();
+    N = jobsList.size();
     LeaveMonitor();
  }
 
