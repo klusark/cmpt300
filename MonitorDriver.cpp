@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
+#define WAIT_TIME 1
 static int NUM_THREADS = 100;
 static int NUM_WORK_THREADS = 1;
 using namespace std;
@@ -74,7 +75,7 @@ void* Schedule(void* Mon){
                                         start/(double)CLOCKS_PER_SEC);
 
             fclose(TimingFP);
-            usleep(rand() % 10000);
+            usleep(rand() % WAIT_TIME);
         }
     }
 }
