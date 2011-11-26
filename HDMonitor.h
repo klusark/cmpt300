@@ -24,9 +24,19 @@
 
 const int WAIT_FOR_X_REQUESTS = 5;
 const int WAIT_X_NSECONDS = 1000000;
-class HDMonitor; //forward declaration
 
-typedef std::list<request *> RequestList;
+class RequestWrap {
+	public:
+		request *r;
+       		virtual bool operator< (const RequestWrap &o) const {
+			return *r < *(o.r);
+		}
+		bool operator==(const request *o) const{
+			return r == o;
+		}
+};
+
+typedef std::list<RequestWrap> RequestList;
 /*
  * HDMonitor (Hard Drive Monitor)
  *

@@ -57,7 +57,9 @@ void HDMonitor::Request(int track, int duration){
     condition c;
     InitializeCondition(c);
     request *r = new SSTF(track, time(NULL), duration, this, c);
-    jobsList->push_back(r);
+    RequestWrap wrap;
+    wrap.r = r;
+    jobsList->push_back(wrap);
     //printf("The size was %d\n", jobsList->size() +1);
     printf("Just pushed track %d for %d microseconds\n", track, duration);
     if(numWaitingToWork && jobsList->size() >= WAIT_FOR_X_REQUESTS){
@@ -91,13 +93,13 @@ void HDMonitor::DoNextJob(){
     }
     //get next job
     RequestList::iterator nextRequest = min_element(jobsList->begin(), jobsList->end());
-    request *r = *nextRequest;
+    request *r = nextRequest->r;
     //change direction if necessary
     if((direction == -1 && r->track > currentTrack) || 
        (direction == 1  && r->track < currentTrack)) {
         direction *= -1;
         nextRequest = min_element(jobsList->begin(), jobsList->end());
-	r = *nextRequest;
+	r = nextRequest->r;
     }
     currentTrack = r->track;
     //printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
