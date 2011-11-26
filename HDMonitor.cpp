@@ -59,7 +59,7 @@ void HDMonitor::Request(int track, int duration){
     request *r = new SSTF(track, time(NULL), duration, this, c);
     jobsList->push_back(r);
     //printf("The size was %d\n", jobsList->size() +1);
-    //printf("Just pushed track %d for %d microseconds\n", track, duration);
+    printf("Just pushed track %d for %d microseconds\n", track, duration);
     if(numWaitingToWork && jobsList->size() >= WAIT_FOR_X_REQUESTS){
     //if(jobsList->size() && !before && numWaitingToWork) {
         signal(areRequests);
@@ -83,7 +83,7 @@ void HDMonitor::DoNextJob(){
         //The loop is necessary, or else pthreads will wake up a thread
         //that has been inactive for some time.
         while(!jobsList->size()){
-            //printf("going to wait\n");
+            printf("going to wait\n");
             //wait(areRequests);
             timedwait(areRequests, WAIT_X_SECONDS);
         }
