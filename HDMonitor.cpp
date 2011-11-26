@@ -24,6 +24,7 @@
 #include <unistd.h>
 
 #include "SSTF.h"
+#include "Elevator.h"
 
 using namespace std;
 
