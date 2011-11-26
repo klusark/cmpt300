@@ -23,7 +23,7 @@
 #include "Request.h"
 
 const int WAIT_FOR_X_REQUESTS = 5;
-const int WAIT_X_SECONDS = 1;
+const int WAIT_X_NSECONDS = 1000000;
 class HDMonitor; //forward declaration
 
 typedef std::list<request *> RequestList;

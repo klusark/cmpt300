@@ -85,7 +85,7 @@ void HDMonitor::DoNextJob(){
         while(!jobsList->size()){
             printf("going to wait\n");
             //wait(areRequests);
-            timedwait(areRequests, WAIT_X_SECONDS);
+            timedwait(areRequests, WAIT_X_NSECONDS);
         }
         --numWaitingToWork;
     }

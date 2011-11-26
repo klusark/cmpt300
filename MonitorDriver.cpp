@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
-#define WAIT_TIME 1
+#define WAIT_TIME 10000
 static int NUM_THREADS = 100;
 static int NUM_WORK_THREADS = 1;
 using namespace std;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
      printf("ERROR; return code from pthread_create() is %d\n", rc);
      exit(-1);
     }
-    for(t = NUM_WORK_THREADS; t < NUM_THREADS + NUM_WORK_THREADS; ++t){
+    for(t = 0; t < NUM_THREADS + NUM_WORK_THREADS; ++t){
         rc = pthread_join(threads[t], &status);
     }
     return 0;
@@ -74,9 +74,7 @@ void* Schedule(void* Mon){
 
             fclose(TimingFP);
             usleep(rand() % WAIT_TIME);
-        } else if (ret = EOF) {
-		break;
-	}
+        }
     }
 }
 void* DoNext(void* Mon){
