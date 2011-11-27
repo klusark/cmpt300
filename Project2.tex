@@ -1,14 +1,25 @@
 \documentclass{report}
-\usepackage[vmargin=2.0cm,hmargin=2.0cm]{geometry}
+\usepackage[vmargin=2.5cm,hmargin=2.5cm]{geometry}
 \usepackage[pdftex]{graphicx}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
-%\author{Fox, Joel\\ joelsemail@sfu.ca \\ 555555555 \and
-%        Grandy, Matt\\ mattsemail@sfu.ca \\ 666666666 \and
-%        Inwood, Andrew\\ ami2@sfu.ca\\ 301020970}
-%\title{CMPT 300 Project II}
-%\subtitle{Design and Implementation of a Monitor Construct}
 \begin{document}
 \input{./Title.tex}
-%\maketitle
+\section{Introduction}
+Monitors are a powerful technique for providing mutual exclusion to shared
+resources in a multiprogramming environment, because of their ability to simplify the
+programming interface for users of the shared resource. They are, however, a complex
+construct that must be supported by the compiler for the language that makes use of them.
+Seeing as the design goals of C/C++ are primarily based on speed and efficiency of the
+resulting code, Monitors are not supported in these languages. 
 
+In this report we design and implement a software interface that simulates the interface
+of a Monitor, using the pthreads package to provide the mutual exclusion required. We then
+use the Monitor construct to provide mutual exclusion to a hard drive simulator, which receives IO requests 
+from multiple users.
+
+\section{High-level Design} %Joel
+
+\section{Analysis} %Andrew
+
+\section{Listing} %will contain trail runs and source code
 \end{document}
