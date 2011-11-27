@@ -40,6 +40,8 @@ HDMonitor::HDMonitor(int N){
     //InitializeCondition(areRequests);
     areRequests = new pthread_cond_t();
     pthread_cond_init(areRequests, NULL);
+    numTurns = 0;
+    distance = 0;
 }
 HDMonitor::~HDMonitor(){
 }
@@ -49,12 +51,16 @@ HDMonitor::~HDMonitor(){
  * Creates a new request to the hard drive, and is put on the queue for
  * scheduling.
  */
-void HDMonitor::Request(int track, int duration, int &numRequests){
+void HDMonitor::Request(int track, int duration, int &numRequests, double &T, long
+&turns, long &dist){
     EnterMonitor();
+    T = clock()/(double)CLOCKS_PER_SEC;
     int before = jobsList.size();
+    long startTurns = numTurns;
+    long startDistance = distance;
     condition c;
     InitializeCondition(c);
-    request *r = new SSTF(track, time(NULL), duration, this, c);
+    request *r = new Elevator(track, time(NULL), duration, this, c);
 
     RequestWrap wrap;
     wrap.r = r;
@@ -70,6 +76,9 @@ void HDMonitor::Request(int track, int duration, int &numRequests){
         jobsList.end()){
         timedwait(c, WAIT_X_NSECONDS);
     }
+    T = ( clock()/(double)CLOCKS_PER_SEC) - T;
+    dist = distance - startDistance;
+    turns = numTurns - startTurns;
     //printf("The size is %d\n", jobsList->size() +1);
     numRequests = NumAtRequestComplete[r];
     NumAtRequestComplete.erase(r);
@@ -102,9 +111,17 @@ void HDMonitor::DoNextJob(){
         direction *= -1;
         nextRequest = min_element(jobsList.begin(), jobsList.end());
 	r = nextRequest->r;
+    ++numTurns;
     }
+    int delta = r->track - currentTrack;
+    if(delta > 15) {
+        //printf("Found delta with %d. Next track at $d, current track at $d\n", delta,
+        //r->track, currentTrack);
+    }
+    distance += (delta > 0) ? delta : -1*delta;
     currentTrack = r->track;
     //printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
+    //printf("Have travelled %ld\n", distance);
     NumAtRequestComplete[r] = jobsList.size();
     int sleepytime = r->duration;
     jobsList.erase(nextRequest);

@@ -63,7 +63,8 @@ void Monitor::signal(condition cond){
  * and enables faking the Monitor construct in C++.
  */
 void Monitor::EnterMonitor(){
-    while(pthread_mutex_trylock(occupied));
+    //while(pthread_mutex_trylock(occupied));
+    while(pthread_mutex_lock(occupied));
 }
 
 /*

@@ -65,12 +65,15 @@ void* Schedule(void* Mon){
 	pthread_mutex_unlock(&readmutex);
         if( ret == 2){
             clock_t start = clock();
-            int N;
-            M->Request(track, duration, N);
+            int N; 
+            double T;
+            long turns, distance;
+            M->Request(track, duration, N, T, turns, distance);
             //M->NumberOfRequests(N);
             TimingFP = fopen("TimePerRequest.txt", "a");
-            fprintf(TimingFP, "%d %16.14f\n", N, (clock()/(double)CLOCKS_PER_SEC) -
-                                        start/(double)CLOCKS_PER_SEC);
+            //fprintf(TimingFP, "%d %16.14f\n", N, (clock()/(double)CLOCKS_PER_SEC) -
+            //                            start/(double)CLOCKS_PER_SEC);
+            fprintf(TimingFP, "%d %16.14f %ld %ld\n", N, T, turns, distance);
 
             fclose(TimingFP);
             usleep(rand() % WAIT_TIME);

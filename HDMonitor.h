@@ -54,7 +54,8 @@ class HDMonitor : protected Monitor{
          * Creates a new request to the hard drive, and is put on the queue for
          * scheduling.
          */
-	void Request(int track, int duration, int &numRequests);
+	void Request(int track, int duration, int &numRequests, double &T, long & turns,
+    long & dist);
         /*
          * DoNextJob().
          * Selects the next job from the list based on the scheduling rule.
@@ -70,6 +71,8 @@ class HDMonitor : protected Monitor{
         int numTracks; // Equal to N
         RequestList jobsList;
         std::map<request*, int> NumAtRequestComplete;
+        long numTurns;
+        long distance;
 };
 #endif
 
