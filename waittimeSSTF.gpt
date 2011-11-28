@@ -1,0 +1,8 @@
+set pointsize 1.5;
+set xl "Number of Request Threads";
+set yl "Average Wait Time per Request";
+set title "Wait Time per Request for SSTF Algorithm"
+set key left
+plot  "./RelativeThreadData_SSTF_1Work.txt" us 1:4 pt 4 ti "1 Servicing Threads";
+rep "./RelativeThreadData_SSTF_5Work.txt" us 1:4 pt 4 ti "5 Servicing Threads";
+rep "./RelativeThreadData_SSTF_100Work.txt" us 1:4 pt 4 ti "100 Servicing Threads";

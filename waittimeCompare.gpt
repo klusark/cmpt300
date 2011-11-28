@@ -1,0 +1,7 @@
+set pointsize 1.5;
+set xl "Number of Request Threads";
+set yl "Average Wait Time per Request";
+set title "Comparison of Wait Times of Both algorithms (1 Servicing Thread)"
+set key left
+plot  "./RelativeThreadData_Elevator_1Work.txt" us 1:4 pt 4 ti "Elevator";
+rep  "./RelativeThreadData_SSTF_1Work.txt" us 1:4 pt 6 ti "SSTF";
