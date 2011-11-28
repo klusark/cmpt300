@@ -3,10 +3,10 @@ set xl "Number of Request Threads";
 set yl "Average Wait Time per Request (s)";
 set title "Wait Time per Request for Elevator Algorithm"
 set key left
-plot  "./RelativeThreadData_Elevator_1Work.txt" us 1:4 pt 4 ti "1 Servicing Threads";
-rep "./RelativeThreadData_Elevator_5Work.txt" us 1:4 pt 4 ti "5 Servicing Threads";
-rep "./RelativeThreadData_Elevator_100Work.txt" us 1:4 pt 4 ti "100 Servicing Threads";
-set term png size 1024,768
-set output 'waittimeElevator.png'
+plot  "./RelativeThreadData_Elevator_1Work.txt" us 1:4 pt 4 lt -1 ti "1 Servicing Threads";
+rep "./RelativeThreadData_Elevator_5Work.txt" us 1:4 pt 6   lt  1 ti "5 Servicing Threads";
+rep "./RelativeThreadData_Elevator_100Work.txt" us 1:4 pt 8 lt  3 ti "100 Servicing Threads";
+set term post eps color
+set output 'waittimeElevator.eps'
 rep
 set term pop

@@ -3,9 +3,9 @@ set xl "Number of Request Threads";
 set yl "Average Number of Turns per Request";
 set title "Average \# of Direction Reversals per Request (SSTF)"
 set key left
-plot  "./RelativeThreadData_SSTF_1Work.txt" us 1:5 pt 4 ti "1 Servicing Threads";
-rep "./RelativeThreadData_SSTF_100Work.txt" us 1:5 pt 4 ti "100 Servicing Threads";
-set term png size 1024,768
-set output 'turnsSSTF.png'
+plot  "./RelativeThreadData_SSTF_1Work.txt" us 1:5 pt 4 lt 1 ti "1 Servicing Threads";
+rep "./RelativeThreadData_SSTF_100Work.txt" us 1:5 pt 6 lt 3 ti "100 Servicing Threads";
+set term post eps color
+set output 'turnsSSTF.eps'
 rep
 set term pop

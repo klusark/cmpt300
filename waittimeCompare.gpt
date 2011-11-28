@@ -3,9 +3,9 @@ set xl "Number of Request Threads";
 set yl "Average Wait Time per Request (s)";
 set title "Comparison of Wait Times of Both algorithms (1 Servicing Thread)"
 set key left
-plot  "./RelativeThreadData_Elevator_1Work.txt" us 1:4 pt 4 ti "Elevator";
-rep  "./RelativeThreadData_SSTF_1Work.txt" us 1:4 pt 6 ti "SSTF";
-set term png size 1024,768
-set output 'waittimeCompare.png'
+plot  "./RelativeThreadData_Elevator_1Work.txt" us 1:4 pt 4 lt 1 ti "Elevator";
+rep  "./RelativeThreadData_SSTF_1Work.txt" us 1:4 pt 6      lt 3 ti "SSTF";
+set term post eps color
+set output 'waittimeCompare.eps'
 rep
 set term pop

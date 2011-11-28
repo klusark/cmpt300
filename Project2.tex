@@ -41,14 +41,14 @@ IO requests from anywhere on the disk.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.45]{waittimeElevator.png}
+    \includegraphics[scale=1]{waittimeElevator.pdf}
     \label{fig:waittimeElevator}
     \caption{The wait time per request is improved by using more than one servicing thread.}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.45]{waittimeSSTF.png}
+    \includegraphics[scale=1]{waittimeSSTF.pdf}
     \label{fig:waittimeSSTF}
     \caption{The wait time per request is improved by using more than one servicing thread.}
 \end{figure}
@@ -101,7 +101,7 @@ quantity with respect to the number of request threads in the simulation, for th
 Elevator and SSTF algorithms, respectively.
 \begin{figure}
     \centering
-    \includegraphics[scale=0.45]{distanceElevator.png}
+    \includegraphics[scale=1]{distanceElevator.pdf}
     \label{fig:distanceElevator}
     \caption{The average number of tracks traversed by the IO head per request can depend
     significantly on the number of servicing threads in use.}
@@ -109,7 +109,7 @@ Elevator and SSTF algorithms, respectively.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.45]{distanceSSTF.png}
+    \includegraphics[scale=1]{distanceSSTF.pdf}
     \label{fig:distanceSSTF}
     \caption{Performans of SSTF under the distance metric is comparable to Elevator on
     random input data.}
@@ -174,6 +174,20 @@ metric, in real hardware it is expected that instructing the IO head to reverse 
 would take some time, and it may be a desirable quantity to minimize. Figures
 \ref{fig:turnsElevator} and \ref{fig:turnsSSTF} show this quantity with respect to the 
 number of request threads, for the Elevator and SSTF algorithms, respectively.
+\begin{figure}
+    \centering
+    \includegraphics[scale=1]{turnsElevator.pdf}
+    \label{fig:turnsElevator}
+    \caption{Due to the nature of the Elevator algorithm, the number of turns per request
+    is guaranteed never to be more than one.}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=1]{turnsSSTF.pdf}
+    \label{fig:turnsSSTF}
+    \caption{The number of reversals when using SSTF can be more than one per request.}
+\end{figure}
 
 For both algorithms, there is an initial increase in the number of reversals as the number
 of request threads increase. This again is attributable to a non-empty request queue which
