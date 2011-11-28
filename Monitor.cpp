@@ -25,7 +25,8 @@ Monitor::Monitor(){
  * 
  * Creates and initializes a condition for immidiate use.
  * 
- */void Monitor::InitializeCondition(condition &c){
+ */
+void Monitor::InitializeCondition(condition &c){
     c = new pthread_cond_t();
     pthread_cond_init(c, NULL);
 }
