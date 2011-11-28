@@ -24,9 +24,6 @@ from multiple users.
 
 \section{Analysis} %Andrew
 \subsection{Time to Service a Request}
-
-
-
 One of the most important metrics in analyzing the performance of the hard drive is the
 time it takes after an IO request is made before it is serviced by the hard drive. This
 interval is expected to depend on the number of unserviced requests made to the hard drive
@@ -102,6 +99,21 @@ number of tracks traversed between the time a request is made, and the same requ
 serviced. In figures \ref{fig:distanceElevator} and \ref{fig:distanceSSTF} we show this 
 quantity with respect to the number of request threads in the simulation, for the
 Elevator and SSTF algorithms, respectively.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.45]{distanceElevator.png}
+    \label{fig:distanceElevator}
+    \caption{The average number of tracks traversed by the IO head per request can depend
+    significantly on the number of servicing threads in use.}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.45]{distanceSSTF.png}
+    \label{fig:distanceSSTF}
+    \caption{Performans of SSTF under the distance metric is comparable to Elevator on
+    random input data.}
+\end{figure}
 
 Again, it's clear that the two algorithms have similar performance under this metric. This
 is again attributable to the behaviour of the two algorithms being similar on the input.
@@ -162,6 +174,19 @@ metric, in real hardware it is expected that instructing the IO head to reverse 
 would take some time, and it may be a desirable quantity to minimize. Figures
 \ref{fig:turnsElevator} and \ref{fig:turnsSSTF} show this quantity with respect to the 
 number of request threads, for the Elevator and SSTF algorithms, respectively.
+
+For both algorithms, there is an initial increase in the number of reversals as the number
+of request threads increase. This again is attributable to a non-empty request queue which
+is sparse. This initial increase is lost when the number of servicing threads is
+increased, because the number of pending requests is kept very low.
+
+This is the first metric for which there is a measurable difference in performance. When
+there is only one request thread, the SSFT algorithm had runs whose \emph{average} number
+of reversals was greater than one. This means that IO head had to reverse direction on
+almost every request, and sometimes more than once. This is definitely not very good
+behaviour if reverals want to be kept to a minimum. In comparison, the number of reversals
+for the Elevator don't vary as much, and the average number of reverals rarely were more
+than 0.8.
 
 %The data shows that the two algorithms perform comparably on this input, and have a
 %profile similar to that of the distance metric (although on a smaller scale). The
