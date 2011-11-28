@@ -63,11 +63,10 @@ class HDMonitor : protected Monitor{
          */
         void DoNextJob();
         void NumberOfRequests(int &N);
-        friend class request; //Allow request to access currentTrack
-//    private:
-        int numWaitingToWork;
-        int direction; //direction of read/write head {-1, 1}
         int currentTrack; //track that read/write head is on [1, N]
+        int direction; //direction of read/write head {-1, 1}
+    private:
+        int numWaitingToWork;
         int numTracks; // Equal to N
         RequestList jobsList;
         std::map<request*, int> NumAtRequestComplete;
