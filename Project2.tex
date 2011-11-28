@@ -35,6 +35,8 @@ morekeywords={*,...}            % if you want to add more keywords to the set
 }
 
 \input{./Title.tex}
+\tableofcontents %automatically generated
+\newpage
 \section{Introduction}
 Monitors are a powerful technique for providing mutual exclusion to shared
 resources in a multiprogramming environment, because of their ability to simplify the
@@ -78,8 +80,7 @@ one of its function calls at a time, and the mutual exclusion is supposed to be 
 automatically by the compiler. This is not possible using C++, and so when writing a
 monitor function as a subclass of the Monitor class, the programmer must ensure that the
 function calls EnterMonitor before doing anything, and calls LeaveMonitor when the
-function's work is done. The public interface and implementation in C++ can be found in
-listings \ref{listing:monitor_h} and \ref{listing:monitor_cpp}.
+function's work is done. The public interface and implementation in C++ can be found in Monitor.h and Monitor.cpp in the online submission.
 
 \subsection{Hard Drive Simulator Design}
 To demonstrate both the correctness of the Monitor class and how to implement a monitor as
@@ -137,7 +138,7 @@ are shown in figure \ref{fig:flow}. These are the functions called by the thread
 main program. Notice how both functions start and end with the EnterMonitor and
 LeaveMonitor calls, respectively. Also of note are the calls to \emph{signal} and
 \emph{wait}, the standard monitor calls. The implementation of the main program logic can
-be found in listing \ref{listing:main}.
+be found in MonitorDriver.cpp in the online submission.
 \begin{figure}[htb!]
     \centering
     \includegraphics[scale=0.8]{300_flow.pdf}
@@ -355,31 +356,30 @@ than 0.8.
 
 \newpage
 \section{Listings} %will contain trial runs and source code
-\subsection{Monitor Interface}
-\lstinputlisting[language=C++, label=listing:monitor_h]{Monitor.h}
-\subsection{Monitor Implementation}
-\lstinputlisting[language=C++, label=listing:monitor_cpp]{Monitor.cpp}
-\subsection{Hard Disk Monitor Interface}
-\lstinputlisting[language=C++]{HDMonitor.h}
-\subsection{Hard Disk Monitor Implementation}
-\lstinputlisting[language=C++]{HDMonitor.cpp}
-\subsection{Request Class Definition}
-\lstinputlisting[language=C++]{Request.h}
-\subsection{Scheduling Algorithm Implementations}
-The scheduling algorithm is implemented by defining an order on the Request objects in the
-HDMonitor class. The order is defined by implementing the less-than operator($<$), and this
-is done in separate files for each algorithm and linked at compile time.
-\subsubsection{Elevator Algorithm}
-\lstinputlisting[language=C++]{Elevator.cpp}
-\subsubsection{Shortest Seek-Time First Algorithm}
-\lstinputlisting[language=C++]{SSTF.cpp}
-\subsection{Main Program}
-\lstinputlisting[language=C++,label=listing:main]{MonitorDriver.cpp}
+%\subsection{Monitor Interface}
+%\lstinputlisting[language=C++, label=listing:monitor_h]{Monitor.h}
+%\subsection{Monitor Implementation}
+%\lstinputlisting[language=C++, label=listing:monitor_cpp]{Monitor.cpp}
+%\subsection{Hard Disk Monitor Interface}
+%\lstinputlisting[language=C++]{HDMonitor.h}
+%\subsection{Hard Disk Monitor Implementation}
+%\lstinputlisting[language=C++]{HDMonitor.cpp}
+%\subsection{Request Class Definition}
+%\lstinputlisting[language=C++]{Request.h}
+%\subsection{Scheduling Algorithm Implementations}
+%The scheduling algorithm is implemented by defining an order on the Request objects in the
+%HDMonitor class. The order is defined by implementing the less-than operator($<$), and this
+%is done in separate files for each algorithm and linked at compile time.
+%\subsubsection{Elevator Algorithm}
+%\lstinputlisting[language=C++]{Elevator.cpp}
+%\subsubsection{Shortest Seek-Time First Algorithm}
+%\lstinputlisting[language=C++]{SSTF.cpp}
+%\subsection{Main Program}
+%\lstinputlisting[language=C++,label=listing:main]{MonitorDriver.cpp}
 \subsection{Sample Output}
 \subsubsection{Elevator}
 \lstinputlisting[label=listing:sample_elevator]{sample_elevator_output.txt}
 \subsubsection{SSTF}
 \lstinputlisting[label=listing:sample_SSTF]{sample_SSTF_output.txt}
 
-\tableofcontents %automatically generated
 \end{document}
