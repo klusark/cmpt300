@@ -69,7 +69,7 @@ Figure \ref{fig:UML} features a UML class diagram of the intended system.
     \label{fig:UML}
 \end{figure}
 
-As is see in the diagram, the Monitor class has a very basic interface, with only a few
+As is seen in the diagram, the Monitor class has a very basic interface, with only a few
 function calls, most of which are typical monitor calls like \emph{signal} and
 \emph{wait}. Two functions which are not standard are \emph{EnterMonitor} and
 \emph{LeaveMonitor}. The monitor construct is supposed to only allow one process to use
@@ -103,13 +103,13 @@ First (SSTF) algorithm. In the Elevator algorithm, the IO head moves in one dire
 servicing pending requests as it reaches the desired tracks, and only changes direction
 when it reaches the inner or outer edge. The head will also change direction if there are 
 no more requests for tracks in the direction of travel, but there are requests for tracks
-in the opposite direction. The SSTF algorithm will move the IO head to whichever desired
-track is closest to its current position.
+in the opposite direction. The SSTF algorithm will move the IO head to the desired
+track that is closest to its current position.
 
 To help the simulation decide which request to service next, we define a Request class as
 was seen in figure \ref{fig:UML}. Not only does the Request object keep a record of all
 the important request information like the track number and work to be done, but it also
-defines a weight through the less than operator (<). The definition of the less-than
+defines a weight through the less-than operator ($<$). The definition of the less-than
 operator depends on the desired scheduling algorithm. A Request object $\mathcal{A}$ is said to be
 less than the Request object $\mathcal{B}$ if $\mathcal{A}$ is to be scheduled before
 $\mathcal{B}$. The simulated hard drive can then maintain a list of
@@ -134,7 +134,7 @@ data in the file.
 The flow of execution for the hard disk Monitor calls \emph{DoNextJob} and \emph{Request}
 are shown in figure \ref{fig:flow}. These are the functions called by the threads in the
 main program. Notice how both functions start and end with the EnterMonitor and
-LeaveMonitor calls as described earlier. Also of note are the calls to \emph{signal} and
+LeaveMonitor calls, respectively. Also of note are the calls to \emph{signal} and
 \emph{wait}, the standard monitor calls. The implementation of the main program logic can
 be found in listing \ref{listing:main}.
 \begin{figure}[htb!]
@@ -145,7 +145,7 @@ be found in listing \ref{listing:main}.
 \end{figure}
 
 In listings \ref{listing:sample_elevator} and \ref{listing:sample_SSTF}, we show the
-first few lines of the output on the experiment, using the Elevator and SSTF algorithms,
+first few lines of the output of the experiment, using the Elevator and SSTF algorithms,
 respectively. There are three types of lines in the output, those that read \emph{going to
 wait}, \emph{Just pushed track X}, and \emph{Working on track X}. These output lines let
 us know when the servicing thread is going to wait because there are no pending requests,
@@ -155,7 +155,7 @@ see that the scheduling algorithms are working as expected.
 As an example, consider lines 54 to 59 of the output from the SSTF algorithm, in listing
 \ref{listing:sample_SSTF}. Previously, track 10 was examined, followed by track 6, before
 the servicing thread output \emph{going to wait}. Then starting at line 54, tracks 2 and 9
-are requested. Since the IO head moved down from 10 to 6, we know the currect direction is
+are requested. Since the IO head moved down from 10 to 6, we know the current direction is
 down. The next lines show that track 9 was scheduled before track 2, because track 9 is
 closer to track 6 than is track 2. The Elevator algorithm, on the other hand, would have
 scheduled track 2 before track 9, since track 2 was in the direction of travel.
@@ -176,7 +176,6 @@ function of the number of request threads for the Elevator and SSTF scheduling a
 respectively.
 This data was gathered from running the simulation multiple times, with increasingly many
 request threads, and on input data of 1000 requests generated randomly on the disk.
-IO requests from anywhere on the disk. 
 
 \begin{figure}[htb!]
     \centering
@@ -191,9 +190,11 @@ IO requests from anywhere on the disk.
     \caption{The wait time per request is improved by using more than one servicing thread.}
     \label{fig:waittimeSSTF}
 \end{figure}
-From the graphs, we can make a few observations. Firstly, we can see that the performance
-of both algorithms are comparable using this metric, on this input data. This happens because
-the behaviour of the two algorithms are similar when the request queue
+From the graphs, we can make a few observations. Firstly, we can see that using this
+metric,
+both algorithms perform about equally well on the chosen input data.
+This happens because
+the behaviour of the two algorithms is similar when the request queue
 contains data from everywhere on the disk. In this situation, both algorithms will scan up
 and down the disk in succession, servicing requests along the way. 
 
@@ -202,10 +203,11 @@ the change in performance when increasing number of servicing threads are employ
 increasing from one to five threads, there is a clear improvement in  performance,
 especially when there are many request threads. With only one servicing thread,
 there is a divergence from linear behaviour, but this divergence is delayed when using a
-large number of servicing threads. However, we can see that when using 100 threads, the
+large number of servicing threads. However, we can see that when using 100 servicing threads, the
 performance is reduced from when using 5 threads. This is caused by the overhead of
 the system having to maintain a large number of threads. Therefore, performance by this
-metric is optimized by using a small number of servicing threads, but more than one.
+metric is optimized by using more than one servicing threads, but not too many, and the
+optimal value could probably be found by tuning.
 
 %This data was generated by running the simulation with increasingly large number of
 %requesting threads, since this causes more requests to get onto the queue before the
@@ -229,11 +231,11 @@ requests will be pending at any time, so it is not possible to predict how long 
 thread will execute before pthreads forces it to yield.
 
 \subsection{Distance per Request}
-In the on the time to service a request, the analysis assumed that all jobs took the same
-amount of time to execute, and so the time was mostly attributable to the scheduling
+In the last section, the analysis assumed that all jobs took the same
+amount of time to execute, and so the waiting interval was mostly attributable to the scheduling
 algorithm, and the relative amount of time spent in requesting threads versus the
 servicing thread. In real hardware, the IO head will require some time to move to the
-desired track, and so this might be a useful metric. Specifically, we measure the average
+desired track, and so this can be a useful metric. Specifically, we measure the average
 number of tracks traversed between the time a request is made, and the same request is
 serviced. In figures \ref{fig:distanceElevator} and \ref{fig:distanceSSTF} we show this 
 quantity with respect to the number of request threads in the simulation, for the
@@ -251,7 +253,7 @@ Elevator and SSTF algorithms, respectively.
 \begin{figure}[htb!]
     \centering
     \includegraphics[scale=1]{distanceSSTF.pdf}
-    \caption{Performans of SSTF under the distance metric is comparable to Elevator on
+    \caption{Performance of SSTF under the distance metric is comparable to Elevator on
     random input data.}
     \label{fig:distanceSSTF}
 \end{figure}
@@ -320,12 +322,13 @@ of request threads increase. This again is attributable to a non-empty request q
 is sparse. This initial increase is lost when the number of servicing threads is
 increased, because the number of pending requests is kept very low.
 
-This is the first metric for which there is a measurable difference in performance. When
-there is only one request thread, the SSFT algorithm had runs whose \emph{average} number
+This is the first metric for which there is a measurable difference in performance between
+the two scheduling algorithms. When
+there is only one request thread, the SSTF algorithm had runs whose \emph{average} number
 of reversals was greater than one. This means that IO head had to reverse direction on
 almost every request, and sometimes more than once. This is definitely not very good
-behaviour if reverals want to be kept to a minimum. In comparison, the number of reversals
-for the Elevator don't vary as much, and the average number of reverals rarely were more
+behaviour if reversals want to be kept to a minimum. In comparison, the number of reversals
+for the Elevator don't vary as much, and the average number of reversals rarely were more
 than 0.8.
 \newpage
 \begin{figure}[htb]
@@ -362,7 +365,7 @@ than 0.8.
 \lstinputlisting[language=C++]{Request.h}
 \subsection{Scheduling Algorithm Implementations}
 The scheduling algorithm is implemented by defining an order on the Request objects in the
-HDMonitor class. The order is defined by implementing the less-than operator(<), and this
+HDMonitor class. The order is defined by implementing the less-than operator($<$), and this
 is done in separate files for each algorithm and linked at compile time.
 \subsubsection{Elevator Algorithm}
 \lstinputlisting[language=C++]{Elevator.cpp}
