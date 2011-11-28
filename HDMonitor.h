@@ -69,10 +69,11 @@ class HDMonitor : protected Monitor{
         int numWaitingToWork;
         int numTracks; // Equal to N
         RequestList jobsList;
-        std::map<request*, int> NumAtRequestComplete;
+        /*Attributes for Testing*/
         int numTurns;
         int distance;
-        std::map<request*, int> numTurnsMap;
-        std::map<request*, int> distanceMap;
+        std::map<request*, int> NumAtRequestComplete; // counts pending requests
+        std::map<request*, int> numTurnsMap; //counts reversals
+        std::map<request*, int> distanceMap; //counts tracks traversed
 };
 #endif
