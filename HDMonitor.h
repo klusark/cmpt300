@@ -76,4 +76,3 @@ class HDMonitor : protected Monitor{
         std::map<request*, int> distanceMap;
 };
 #endif
-

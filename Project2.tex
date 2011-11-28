@@ -1,11 +1,37 @@
 \documentclass{report}
 \usepackage[vmargin=2.5cm,hmargin=2.5cm]{geometry}
 \usepackage[pdftex]{graphicx}
+\usepackage{listings}
 \usepackage{amsmath}
+\usepackage{color}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \newcommand{\dsum}{\displaystyle\sum}
 \def\thesection{\arabic{section}}
 \begin{document}
+%Set definitions for listings
+\lstset{ %
+language=C++,                     % the language of the code
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=2,                   % the step between two line-numbers. If it's 1, each line 
+                                % will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,          % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,                   % adds a frame around the code
+tabsize=2,                      % sets default tabsize to 2 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                % also try caption instead of title
+escapeinside={\%*}{*)},         % if you want to add a comment within your code
+morekeywords={*,...}            % if you want to add more keywords to the set
+}
+
 \input{./Title.tex}
 \section{Introduction}
 Monitors are a powerful technique for providing mutual exclusion to shared
@@ -22,6 +48,7 @@ from multiple users.
 
 \section{High-level Design} %Joel
 
+\newpage
 \section{Analysis} %Andrew
 \subsection{Time to Service a Request}
 One of the most important metrics in analyzing the performance of the hard drive is the
@@ -39,14 +66,14 @@ This data was gathered from running the simulation multiple times, with increasi
 request threads, and on input data of 1000 requests generated randomly on the disk.
 IO requests from anywhere on the disk. 
 
-\begin{figure}
+\begin{figure}[htb!]
     \centering
     \includegraphics[scale=1]{waittimeElevator.pdf}
     \label{fig:waittimeElevator}
     \caption{The wait time per request is improved by using more than one servicing thread.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb!]
     \centering
     \includegraphics[scale=1]{waittimeSSTF.pdf}
     \label{fig:waittimeSSTF}
@@ -99,7 +126,9 @@ number of tracks traversed between the time a request is made, and the same requ
 serviced. In figures \ref{fig:distanceElevator} and \ref{fig:distanceSSTF} we show this 
 quantity with respect to the number of request threads in the simulation, for the
 Elevator and SSTF algorithms, respectively.
-\begin{figure}
+
+\newpage
+\begin{figure}[htb!]
     \centering
     \includegraphics[scale=1]{distanceElevator.pdf}
     \label{fig:distanceElevator}
@@ -107,14 +136,14 @@ Elevator and SSTF algorithms, respectively.
     significantly on the number of servicing threads in use.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb!]
     \centering
     \includegraphics[scale=1]{distanceSSTF.pdf}
     \label{fig:distanceSSTF}
     \caption{Performans of SSTF under the distance metric is comparable to Elevator on
     random input data.}
 \end{figure}
-
+\newpage
 Again, it's clear that the two algorithms have similar performance under this metric. This
 is again attributable to the behaviour of the two algorithms being similar on the input.
 Of particular interest, however, is the profile of the data. When the number of request
@@ -174,21 +203,6 @@ metric, in real hardware it is expected that instructing the IO head to reverse 
 would take some time, and it may be a desirable quantity to minimize. Figures
 \ref{fig:turnsElevator} and \ref{fig:turnsSSTF} show this quantity with respect to the 
 number of request threads, for the Elevator and SSTF algorithms, respectively.
-\begin{figure}
-    \centering
-    \includegraphics[scale=1]{turnsElevator.pdf}
-    \label{fig:turnsElevator}
-    \caption{Due to the nature of the Elevator algorithm, the number of turns per request
-    is guaranteed never to be more than one.}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=1]{turnsSSTF.pdf}
-    \label{fig:turnsSSTF}
-    \caption{The number of reversals when using SSTF can be more than one per request.}
-\end{figure}
-
 For both algorithms, there is an initial increase in the number of reversals as the number
 of request threads increase. This again is attributable to a non-empty request queue which
 is sparse. This initial increase is lost when the number of servicing threads is
@@ -201,12 +215,49 @@ almost every request, and sometimes more than once. This is definitely not very 
 behaviour if reverals want to be kept to a minimum. In comparison, the number of reversals
 for the Elevator don't vary as much, and the average number of reverals rarely were more
 than 0.8.
+\newpage
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=1]{turnsElevator.pdf}
+    \label{fig:turnsElevator}
+    \caption{Due to the nature of the Elevator algorithm, the number of turns per request
+    is guaranteed never to be more than one.}
+\end{figure}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[scale=1]{turnsSSTF.pdf}
+    \label{fig:turnsSSTF}
+    \caption{The number of reversals when using SSTF can be more than one per request.}
+\end{figure}
 
 %The data shows that the two algorithms perform comparably on this input, and have a
 %profile similar to that of the distance metric (although on a smaller scale). The
 %explanation for this behaviour is the same as that for the distance metric behaviour: when
 %there are few requests on the queue, both algorithms may make a detour 
+
+\newpage
 \section{Listings} %will contain trial runs and source code
+\subsection{Monitor Interface}
+\lstinputlisting[language=C++]{Monitor.h}
+\subsection{Monitor Implementation}
+\lstinputlisting[language=C++]{Monitor.cpp}
+\subsection{Hard Disk Monitor Interface}
+\lstinputlisting[language=C++]{HDMonitor.h}
+\subsection{Hard Disk Monitor Implementation}
+\lstinputlisting[language=C++]{HDMonitor.cpp}
+\subsection{Request Class Definition}
+\lstinputlisting[language=C++]{Request.h}
+\subsection{Scheduling Algorithm Implementations}
+The scheduling algorithm is implemented by defining an order on the Request objects in the
+HDMonitor class. The order is defined by implementing the less-than operator(<), and this
+is done in separate files for each algorithm and linked at compile time.
+\subsubsection{Elevator Algorithm}
+\lstinputlisting[language=C++]{Elevator.cpp}
+\subsubsection{Shortest Seek-Time First Algorithm}
+\lstinputlisting[language=C++]{SSTF.cpp}
+\subsection{Main Program}
+\lstinputlisting[language=C++]{MonitorDriver.cpp}
 
 
 \tableofcontents %automatically generated
