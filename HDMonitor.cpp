@@ -60,14 +60,14 @@ void HDMonitor::Request(int track, int duration, int &numRequests, double &T, in
     int startDistance = distance;
     condition c;
     InitializeCondition(c);
-    request *r = new SSTF(track, time(NULL), duration, this, c);
+    request *r = new Elevator(track, time(NULL), duration, this, c);
 
     RequestWrap wrap;
     wrap.r = r;
     jobsList.push_back(wrap);
     NumAtRequestComplete.insert(pair<request*,int>(r, 0));
     //printf("The size was %d\n", jobsList->size() +1);
-    //printf("Just pushed track %d for %d microseconds\n", track, duration);
+    printf("Just pushed track %d for %d microseconds\n", track, duration);
     if(numWaitingToWork && jobsList.size() >= WAIT_FOR_X_REQUESTS){
     //if(jobsList->size() && !before && numWaitingToWork) {
         signal(areRequests);
@@ -104,7 +104,7 @@ void HDMonitor::DoNextJob(){
         //The loop is necessary, or else pthreads will wake up a thread
         //that has been inactive for some time.
         while(!jobsList.size()){
-            //printf("going to wait\n");
+            printf("going to wait\n");
             //wait(areRequests);
             timedwait(areRequests, WAIT_X_NSECONDS);
         }
@@ -129,7 +129,7 @@ void HDMonitor::DoNextJob(){
     }
     distance += (delta > 0) ? delta : -1*delta;
     currentTrack = r->track;
-    //printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
+    printf("Working on track %d for %d micro seconds\n", r->track, r->duration);
     //printf("Have travelled %ld\n", distance);
     NumAtRequestComplete[r] = jobsList.size();
     int sleepytime = r->duration;

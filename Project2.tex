@@ -82,6 +82,7 @@ listings \ref{listing:monitor_h} and \ref{listing:monitor_cpp}.
 To demonstrate both the correctness of the Monitor class and how to implement a monitor as
 a subclass of Monitor, we implement a hard disk simulation in C++ using the Monitor
 interface to provide mutual exclusion to the shared resource (the IO read/write head).
+All of the source code can be found in the Listings section.
 Multiple threads will be generated to request IO on the tracks of the hard disk (labelled
 1 to 15 for our experiments), and the hard disk will be responsible for managing these
 requests and servicing them according to a scheduling algorithm. The basic picture is
@@ -102,6 +103,26 @@ when it reaches the inner or outer edge. The head will also change direction if 
 no more requests for tracks in the direction of travel, but there are requests for tracks
 in the opposite direction. The SSTF algorithm will move the IO head to whichever desired
 track is closest to its current position.
+
+To help the simulation decide which request to service next, we define a Request class as
+was seen in figure \ref{fig:UML}. Not only does the Request object keep a record of all
+the important request information like the track number and work to be done, but it also
+defines a weight through the less than operator (<). The definition of the less-than
+operator depends on the desired scheduling algorithm. A Request object $\mathcal{A}$ is said to be
+less than the Request object $\mathcal{B}$ if $\mathcal{A}$ is to be scheduled before
+$\mathcal{B}$. The simulated hard drive can then maintain a list of
+Request objects as they are made, and decide the next one to service by finding the
+smallest Request object. As seen in the UML diagram, the implementation of the less-than
+operator is found in a separate file from the rest of the Request definition, to make it
+easy to plug in different definitions to get different scheduling algorithms.
+
+And here's a flow chart
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[scale=1]{300_flow.png}
+    \label{fig:flow}
+    \caption{a flow chart}
+\end{figure}
 
 \newpage
 \section{Analysis} %Andrew
