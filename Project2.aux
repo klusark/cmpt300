@@ -1,0 +1,47 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}High-level Design}{1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Monitor Design}{1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces UML diagram from the hard drive simulation.\relax }}{1}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:UML}{{2.1}{1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Hard Drive Simulator Design}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Scheduling environment for the hard drive simulation.\relax }}{2}}
+\newlabel{fig:sched}{{2.2}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Hard Drive Simulation Experiment}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces a flow chart\relax }}{3}}
+\newlabel{fig:flow}{{2.3}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Analysis}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Time to Service a Request}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces The wait time per request is improved by using more than one servicing thread.\relax }}{5}}
+\newlabel{fig:waittimeElevator}{{3.1}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces The wait time per request is improved by using more than one servicing thread.\relax }}{6}}
+\newlabel{fig:waittimeSSTF}{{3.2}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Distance per Request}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces The average number of tracks traversed by the IO head per request can depend significantly on the number of servicing threads in use.\relax }}{7}}
+\newlabel{fig:distanceElevator}{{3.3}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Performance of SSTF under the distance metric is comparable to Elevator on random input data.\relax }}{7}}
+\newlabel{fig:distanceSSTF}{{3.4}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Reversals per Request}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Due to the nature of the Elevator algorithm, the number of turns per request is guaranteed never to be more than one.\relax }}{9}}
+\newlabel{fig:turnsElevator}{{3.5}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces The number of reversals when using SSTF can be more than one per request.\relax }}{9}}
+\newlabel{fig:turnsSSTF}{{3.6}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Listings}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Monitor Interface}{10}}
+\newlabel{listing:monitor_h}{{4.1}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Monitor Implementation}{10}}
+\newlabel{listing:monitor_cpp}{{4.2}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Hard Disk Monitor Interface}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Hard Disk Monitor Implementation}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Request Class Definition}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Scheduling Algorithm Implementations}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{Elevator Algorithm}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{Shortest Seek-Time First Algorithm}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Main Program}{17}}
+\newlabel{listing:main}{{4.7}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.8}Sample Output}{19}}
+\@writefile{toc}{\contentsline {subsubsection}{Elevator}{19}}
+\newlabel{listing:sample_elevator}{{4.8}{19}}
+\@writefile{toc}{\contentsline {subsubsection}{SSTF}{20}}
+\newlabel{listing:sample_SSTF}{{4.8}{20}}

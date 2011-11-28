@@ -1,0 +1,45 @@
+\begin{titlepage}
+
+\begin{center}
+
+
+% Upper part of the page
+\includegraphics[width=0.15\textwidth]{./logo}\\[1cm]    
+
+\textsc{\LARGE Simon Fraser University}\\[1.5cm]
+
+\textsc{\Large CMPT 300: Project 2}\\[0.5cm]
+
+\textsc{\large Design and Implementation of a Monitor Construct for Use in Hard Disk
+Simulation.}\\[0.5cm]
+
+
+
+% Title
+\HRule \\[0.4cm]
+{ \huge \bfseries Lager brewing techniques}\\[0.4cm]
+
+\HRule \\[1.5cm]
+
+% Author and supervisor
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+John \textsc{Smith}
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisor:} \\
+Dr.~Mark \textsc{Brown}
+\end{flushright}
+\end{minipage}
+
+\vfill
+
+% Bottom of the page
+{\large \today}
+
+\end{center}
+
+\end{titlepage}
