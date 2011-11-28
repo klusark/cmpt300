@@ -46,10 +46,40 @@ of a Monitor, using the pthreads package to provide the mutual exclusion require
 use the Monitor construct to provide mutual exclusion to a hard drive simulator, which receives IO requests 
 from multiple users.
 
-\section{High-level Design} %Joel
+\section{High-level Design} %Joel sucks
+\subsection{Monitor Design}
+Since the monitor construct has to be designed as a language feature, we can only hope to
+simulate the interface of a monitor in C++. The strategy is to use object oriented design
+and write a Monitor class which has the same interface as a rudimentary monitor, along
+with some extra helper functions to provide the functionality which would typically be
+language features. 
+
+Once the Monitor class has been written, a programmer would then be able to write their
+own monitor as a subclass of the Monitor class, and implement their monitor functions
+according the documentation provided with the Monitor class. As an example, in this
+report, we implement a hard drive simulation, and provide mutual exclusion to the shared
+resources (IO read/write head) by writing a subclass of the Monitor called HDMonitor.
+Figure \ref{fig:UML} features a UML class diagram of the intended system.
 \begin{figure}[htb!]
     \centering
-    \includegraphics[scale=8]{Scheduling_Env.png}
+    \includegraphics[scale=0.5]{300UML.pdf}
+    \label{fig:UML}
+    \caption{UML diagram from the hard drive simulation.}
+\end{figure}
+
+As is see in the diagram, the Monitor class has a very basic interface, with only a few
+function calls, most of which are typical monitor calls like \emph{signal} and
+\emph{wait}. Two functions which are not standard are \emph{EnterMonitor} and
+\emph{LeaveMonitor}. The monitor construct is supposed to only allow one process to use
+one of its function calls at a time, and the mutual exclusion is supposed to be provided
+automatically by the compiler. This is not possible using C++, and so when writing a
+monitor function as a subclass of the Monitor class, the programmer must ensure that the
+function calls EnterMonitor before doing anything, and calls LeaveMonitor when the
+function's work is done. The public interface and implementation in C++ can be found in
+listings \ref{listing:monitor_h} and \ref{listing:monitor_cpp}.
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[scale=0.6]{Scheduling_Env.png}
     \label{fig:sched}
     \caption{Scheduling environment for the hard drive simulation.}
 \end{figure}
@@ -245,9 +275,9 @@ than 0.8.
 \newpage
 \section{Listings} %will contain trial runs and source code
 \subsection{Monitor Interface}
-\lstinputlisting[language=C++]{Monitor.h}
+\lstinputlisting[language=C++, label=listing:monitor_h]{Monitor.h}
 \subsection{Monitor Implementation}
-\lstinputlisting[language=C++]{Monitor.cpp}
+\lstinputlisting[language=C++, label=listing:monitor_cpp]{Monitor.cpp}
 \subsection{Hard Disk Monitor Interface}
 \lstinputlisting[language=C++]{HDMonitor.h}
 \subsection{Hard Disk Monitor Implementation}
