@@ -1,0 +1,6 @@
+\contentsline {figure}{\numberline {1}{\ignorespaces The wait time per request is improved by using more than one servicing thread.}}{2}
+\contentsline {figure}{\numberline {2}{\ignorespaces The wait time per request is improved by using more than one servicing thread.}}{3}
+\contentsline {figure}{\numberline {3}{\ignorespaces The average number of tracks traversed by the IO head per request can depend significantly on the number of servicing threads in use.}}{4}
+\contentsline {figure}{\numberline {4}{\ignorespaces Performans of SSTF under the distance metric is comparable to Elevator on random input data.}}{4}
+\contentsline {figure}{\numberline {5}{\ignorespaces Due to the nature of the Elevator algorithm, the number of turns per request is guaranteed never to be more than one.}}{6}
+\contentsline {figure}{\numberline {6}{\ignorespaces The number of reversals when using SSTF can be more than one per request.}}{6}

@@ -1,0 +1,12 @@
+set pointsize 1.5;
+set xl "Number of Request Threads";
+set yl "Average \# of Tracks Traversed per Request";
+set title "Average \# of Tracks Traversed per Request (Elevator)"
+set key left
+plot  "./RelativeThreadData_Elevator_1Work.txt" us 1:6 pt 4 lt -1 ti "1 Servicing Threads";
+rep "./RelativeThreadData_Elevator_5Work.txt" us 1:6 pt 6 lt 1 ti "5 Servicing Threads";
+rep "./RelativeThreadData_Elevator_100Work.txt" us 1:6 pt 8 lt 3 ti "100 Servicing Threads";
+set term post eps color
+set output 'distanceElevator.eps'
+rep
+set term pop
