@@ -13,22 +13,23 @@
 #ifndef MONITOR_H
 #define MONITOR_H
 #include <pthread.h>
-#include <map>
+
 typedef pthread_cond_t *condition;
+
 class Monitor{
-    public:
-        //Constructor
-        Monitor();
-        void wait(condition &cond);
-        void timedwait(condition &cond, int t);
-        void signal(condition cond);
-        void EnterMonitor();
-        void LeaveMonitor();
-        void InitializeCondition(condition &c);
-    private:
-        /*The occupied mutex ensures that only one process is present in the
-         *mutex at one time.
-         */
-        pthread_mutex_t *occupied;
+public:
+    //Constructor
+    Monitor();
+    void wait(condition &cond);
+    void timedwait(condition &cond, int t);
+    void signal(condition cond);
+    void EnterMonitor();
+    void LeaveMonitor();
+    void InitializeCondition(condition &c);
+private:
+    /*The occupied mutex ensures that only one process is present in the
+     *mutex at one time.
+     */
+    pthread_mutex_t *occupied;
 };
 #endif

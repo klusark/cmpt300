@@ -2,6 +2,7 @@
  * HDMonitor.h
  *
  * Created by Andrew Inwood on 11/15/11
+ * Modified by Joel Teichroeb 11/27/11
  * for CMPT 300 Project 2.
  *
  * All rights reserved.
@@ -27,14 +28,14 @@ const int WAIT_FOR_X_REQUESTS = 1;
 const int WAIT_X_NSECONDS = 1000000;
 
 class RequestWrap {
-	public:
-		request *r;
-       		virtual bool operator< (const RequestWrap &o) const {
-			return *r < *(o.r);
-		}
-		bool operator==(const request *o) const{
-			return r == o;
-		}
+public:
+    request *r;
+    virtual bool operator< (const RequestWrap &o) const {
+        return *r < *(o.r);
+    }
+    bool operator==(const request *o) const{
+        return r == o;
+    }
 };
 
 typedef std::list<RequestWrap> RequestList;
@@ -43,37 +44,36 @@ typedef std::list<RequestWrap> RequestList;
  *
  */
 class HDMonitor : protected Monitor{
-    public:
-        condition areRequests; //Allows the scheduler to wait for requests
-        //Constructors
-        HDMonitor(int N);
-        ~HDMonitor();
+public:
+    condition areRequests; //Allows the scheduler to wait for requests
+    //Constructors
+    HDMonitor(int N);
 
-        /*
-         * Request(int track, int duration)
-         * Creates a new request to the hard drive, and is put on the queue for
-         * scheduling.
-         */
-	void Request(int track, int duration, int &numRequests, double &T, int & turns,
-    int & dist);
-        /*
-         * DoNextJob().
-         * Selects the next job from the list based on the scheduling rule.
-         *
-         */
-        void DoNextJob();
-        void NumberOfRequests(int &N);
-        int currentTrack; //track that read/write head is on [1, N]
-        int direction; //direction of read/write head {-1, 1}
-    private:
-        int numWaitingToWork;
-        int numTracks; // Equal to N
-        RequestList jobsList;
-        /*Attributes for Testing*/
-        int numTurns;
-        int distance;
-        std::map<request*, int> NumAtRequestComplete; // counts pending requests
-        std::map<request*, int> numTurnsMap; //counts reversals
-        std::map<request*, int> distanceMap; //counts tracks traversed
+    /*
+     * Request(int track, int duration)
+     * Creates a new request to the hard drive, and is put on the queue for
+     * scheduling.
+     */
+    void Request(int track, int duration, int &numRequests, double &T, int & turns,
+        int & dist);
+    /*
+     * DoNextJob().
+     * Selects the next job from the list based on the scheduling rule.
+     *
+     */
+    void DoNextJob();
+    void NumberOfRequests(int &N);
+    int currentTrack; //track that read/write head is on [1, N]
+    int direction; //direction of read/write head {-1, 1}
+private:
+    int numWaitingToWork;
+    int numTracks; // Equal to N
+    RequestList jobsList;
+    /*Attributes for Testing*/
+    int numTurns;
+    int distance;
+    std::map<request*, int> NumAtRequestComplete; // counts pending requests
+    std::map<request*, int> numTurnsMap; //counts reversals
+    std::map<request*, int> distanceMap; //counts tracks traversed
 };
 #endif

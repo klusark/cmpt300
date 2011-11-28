@@ -2,6 +2,7 @@
  * HDMonitor.cpp
  *
  * Created by Andrew Inwood on 11/15/11
+ * Modified by Joel Teichroeb 11/27/11
  * for CMPT 300 Project 2.
  *
  * All rights reserved.
@@ -42,8 +43,6 @@ HDMonitor::HDMonitor(int N){
     pthread_cond_init(areRequests, NULL);
     numTurns = 0;
     distance = 0;
-}
-HDMonitor::~HDMonitor(){
 }
 
 /*
@@ -114,7 +113,7 @@ void HDMonitor::DoNextJob(){
        (direction == 1  && r->track < currentTrack)) {
         direction *= -1;
         nextRequest = min_element(jobsList.begin(), jobsList.end());
-	r = nextRequest->r;
+    r = nextRequest->r;
     ++numTurns;
     //printf("Have turned %ld times.\n", numTurns);
     }
@@ -133,7 +132,6 @@ void HDMonitor::DoNextJob(){
     distanceMap.insert(pair<request*,int>(r, distance));
     numTurnsMap.insert(pair<request*,int>(r, numTurns));
     signal(r->c);
-    //delete r;
     usleep(1);
     //usleep(sleepytime); //Do some "work"
     LeaveMonitor();

@@ -17,8 +17,8 @@
 
 class Elevator : public request {
 public:
-       Elevator(int atrack, time_t ator, int aduration, HDMonitor *aHD, condition &ac): request(atrack, ator, aduration, aHD, ac){}
-       virtual bool operator< (const request & r) const;
+    Elevator(int atrack, time_t ator, int aduration, HDMonitor *aHD, condition &ac): request(atrack, ator, aduration, aHD, ac){}
+    virtual bool operator< (const request & r) const;
 };
 
 #endif

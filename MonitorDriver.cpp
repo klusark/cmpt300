@@ -1,3 +1,16 @@
+/*
+ * MonitorDriver.cpp
+ *
+ * Created by Andrew Inwood on 11/15/11
+ * Modified by Joel Teichroeb 11/27/11
+ * for CMPT 300 Project 2.
+ *
+ * All rights reserved.
+ *
+ * 
+ *
+ */
+
 #include "HDMonitor.h"
 #include <cstdio>
 #define NUM_TRACKS 15
@@ -58,15 +71,15 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-void* Schedule(void* Mon){
+void *Schedule(void *Mon){
     int track, duration;
     FILE* TimingFP = fopen("TimePerRequest.txt", "w");
     fclose(TimingFP);
     HDMonitor* M = (HDMonitor*) Mon;
     while(true){
-	pthread_mutex_lock(&readmutex);
-	int ret = scanf("%d %d", &track, &duration);
-	pthread_mutex_unlock(&readmutex);
+    pthread_mutex_lock(&readmutex);
+    int ret = scanf("%d %d", &track, &duration);
+    pthread_mutex_unlock(&readmutex);
         if( ret == 2){
             clock_t start = clock();
             int N;    //These variables will hold test data
@@ -79,11 +92,12 @@ void* Schedule(void* Mon){
             fclose(TimingFP);
             usleep(rand() % WAIT_TIME);
         } else if (ret == EOF) {
-		// if scanf outputs that there is no more data left stop the thread
-		break;
-	}
+            // if scanf outputs that there is no more data left stop the thread
+            break;
+        }
     }
 }
+
 void* DoNext(void* Mon){
     HDMonitor* M = (HDMonitor*) Mon;
     while(true){

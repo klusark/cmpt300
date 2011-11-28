@@ -26,12 +26,11 @@ bg=yellow</panel_attributes>
       <x>0</x>
       <y>230</y>
       <w>350</w>
-      <h>190</h>
+      <h>180</h>
     </coordinates>
     <panel_attributes>HDMonitor
 --
 +HDMonitor(N::int)
-+~HDMonitor()
 +Request(track::int, duration::int,
     numRequests::int, T::double,
     turns::int, dist::int)::void
@@ -139,7 +138,7 @@ bg=yellow</panel_attributes>
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>320</x>
-      <y>280</y>
+      <y>300</y>
       <w>130</w>
       <h>50</h>
     </coordinates>
