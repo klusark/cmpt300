@@ -7,4 +7,6 @@ do
     z=.eps
     y=${f%.*}$z
     epstopdf $y
+    wait $!
+    rm $y
 done
