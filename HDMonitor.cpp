@@ -54,16 +54,17 @@ HDMonitor::~HDMonitor(){
 void HDMonitor::Request(int track, int duration, int &numRequests, double &T, int
 &turns, int &dist){
     EnterMonitor();
-    T = clock()/(double)CLOCKS_PER_SEC;
+    T = clock()/(double)CLOCKS_PER_SEC; //Test data
     int startTurns = numTurns;
     int startDistance = distance;
+
     condition c;
     InitializeCondition(c);
+    //create Request object
     request *r = new Elevator(track, time(NULL), duration, this, c);
-
     RequestWrap wrap;
     wrap.r = r;
-    jobsList.push_back(wrap);
+    jobsList.push_back(wrap); //Add request to list
     NumAtRequestComplete.insert(pair<request*,int>(r, 0));
     //printf("The size was %d\n", jobsList->size() +1);
     printf("Just pushed track %d for %d microseconds\n", track, duration);
@@ -74,11 +75,8 @@ void HDMonitor::Request(int track, int duration, int &numRequests, double &T, in
         jobsList.end()){
         timedwait(c, WAIT_X_NSECONDS);
     }
+    //update test data
     T = ( clock()/(double)CLOCKS_PER_SEC) - T;
-    /*
-    dist = distance - startDistance;
-    turns = numTurns - startTurns;
-    */
     dist = distanceMap[r] - startDistance;
     turns = numTurnsMap[r] - startTurns;
     distanceMap.erase(r);
