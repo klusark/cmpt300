@@ -116,13 +116,47 @@ smallest Request object. As seen in the UML diagram, the implementation of the l
 operator is found in a separate file from the rest of the Request definition, to make it
 easy to plug in different definitions to get different scheduling algorithms.
 
-And here's a flow chart
+\subsection{Hard Drive Simulation Experiment}
+In our experiment we first generated a large file of sample input (1000 requests) to be made to
+the hard drive. The data consists of tracks chosen from the disk at random, all with an
+equal amount of work. This choice was made because this kind of data is easy to generate
+and understand. However, by the principle of locality, it's more likely that a
+hard disk would receive requests for tracks that are in close proximity.
+
+We generate 5 threads whose purpose is to read requests from the data file, and make the
+request call to the monitor. We also generate one servicing thread whose purpose is to
+request that the monitor service a pending request. The servicing thread runs
+indefinitely, but the requesting threads will terminate once they find there is no more
+data in the file.
+
+The flow of execution for the hard disk Monitor calls \emph{DoNextJob} and \emph{Request}
+are shown in figure \ref{fig:flow}. These are the functions called by the threads in the
+main program. Notice how both functions start and end with the EnterMonitor and
+LeaveMonitor calls as described earlier. Also of note are the calls to \emph{signal} and
+\emph{wait}, the standard monitor calls. The implementation of the main program logic can
+be found in listing \ref{listing:main}.
 \begin{figure}[htb!]
     \centering
     \includegraphics[scale=0.8]{300_flow.pdf}
     \label{fig:flow}
     \caption{a flow chart}
 \end{figure}
+
+In listings \ref{listing:sample_elevator} and \ref{listing:sample_SSTF}, we show the
+first few lines of the output on the experiment, using the Elevator and SSTF algorithms,
+respectively. There are three types of lines in the output, those that read \emph{going to
+wait}, \emph{Just pushed track X}, and \emph{Working on track X}. These output lines let
+us know when the servicing thread is going to wait because there are no pending requests,
+when a request is made, and when a request is serviced. By examining the output, we can
+see that the scheduling algorithms are working as expected. 
+
+As an example, consider lines 54 to 59 of the output from the SSTF algorithm, in listing
+\ref{listing:sample_SSTF}. Previously, track 10 was examined, followed by track 6, before
+the servicing thread output \emph{going to wait}. Then starting at line 54, tracks 2 and 9
+are requested. Since the IO head moved down from 10 to 6, we know the currect direction is
+down. The next lines show that track 9 was scheduled before track 2, because track 9 is
+closer to track 6 than is track 2. The Elevator algorithm, on the other hand, would have
+scheduled track 2 before track 9, since track 2 was in the direction of travel.
 
 \newpage
 \section{Analysis} %Andrew
@@ -333,8 +367,12 @@ is done in separate files for each algorithm and linked at compile time.
 \subsubsection{Shortest Seek-Time First Algorithm}
 \lstinputlisting[language=C++]{SSTF.cpp}
 \subsection{Main Program}
-\lstinputlisting[language=C++]{MonitorDriver.cpp}
-
+\lstinputlisting[language=C++,label=listing:main]{MonitorDriver.cpp}
+\subsection{Sample Output}
+\subsubsection{Elevator}
+\lstinputlisting[label=listing:sample_elevator]{sample_elevator_output.txt}
+\subsubsection{SSTF}
+\lstinputlisting[label=listing:sample_SSTF]{sample_SSTF_output.txt}
 
 \tableofcontents %automatically generated
 \end{document}
