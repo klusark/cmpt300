@@ -18,7 +18,7 @@ void *Schedule(void* Mon);
 void *DoNext(void* Mon);
 int main(int argc, char *argv[]){
     if(argc > 2) {
-        NUM_THREADS = atoi(argv[1]);
+        NUM_THREADS = atoi(argv[1]); //Number of threads are command line arguments
         NUM_WORK_THREADS = atoi(argv[2]);
     }
     HDMonitor M(NUM_TRACKS);
@@ -58,7 +58,6 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-
 void* Schedule(void* Mon){
     int track, duration;
     FILE* TimingFP = fopen("TimePerRequest.txt", "w");
@@ -70,7 +69,7 @@ void* Schedule(void* Mon){
 	pthread_mutex_unlock(&readmutex);
         if( ret == 2){
             clock_t start = clock();
-            int N; 
+            int N;    //These variables will hold test data
             double T;
             int  turns, distance;
             M->Request(track, duration, N, T, turns, distance);
@@ -88,6 +87,6 @@ void* Schedule(void* Mon){
 void* DoNext(void* Mon){
     HDMonitor* M = (HDMonitor*) Mon;
     while(true){
-        M->DoNextJob();
+        M->DoNextJob(); //Asks for a request to be serviced indefinitely
     }
 }
