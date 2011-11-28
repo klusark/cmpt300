@@ -55,7 +55,6 @@ void HDMonitor::Request(int track, int duration, int &numRequests, double &T, in
 &turns, int &dist){
     EnterMonitor();
     T = clock()/(double)CLOCKS_PER_SEC;
-    int before = jobsList.size();
     int startTurns = numTurns;
     int startDistance = distance;
     condition c;
@@ -69,7 +68,6 @@ void HDMonitor::Request(int track, int duration, int &numRequests, double &T, in
     //printf("The size was %d\n", jobsList->size() +1);
     printf("Just pushed track %d for %d microseconds\n", track, duration);
     if(numWaitingToWork && jobsList.size() >= WAIT_FOR_X_REQUESTS){
-    //if(jobsList->size() && !before && numWaitingToWork) {
         signal(areRequests);
     }
     while(find(jobsList.begin(), jobsList.end(), r) !=
