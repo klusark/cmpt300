@@ -1,0 +1,7 @@
+set pointsize 1.5;
+set xl "Number of Request Threads";
+set yl "Average Wait Time per Request";
+set title "Average \# of Direction Reversals per Request (Elevator)"
+set key left
+plot  "./RelativeThreadData_Elevator_1Work.txt" us 1:5 pt 4 ti "1 Servicing Threads";
+rep "./RelativeThreadData_Elevator_100Work.txt" us 1:5 pt 4 ti "100 Servicing Threads";
