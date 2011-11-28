@@ -1,3 +1,14 @@
+/*
+ * Elevator.cpp
+ *
+ * Created by Joel Teichroeb on 11/25/11
+ * for CMPT 300 Project 2.
+ *
+ * All rights reserved.
+ *
+ * The Elevator class as defined in Elevator.h.
+ *
+ */
 #include "Elevator.h"
 #include "HDMonitor.h"
 

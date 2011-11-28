@@ -1,3 +1,14 @@
+/*
+ * Elevator.h
+ *
+ * Created by Joel Teichroeb on 11/25/11
+ * for CMPT 300 Project 2.
+ *
+ * All rights reserved.
+ *
+ * The elevator class.
+ *
+ */
 #ifndef ELEVATOR_H
 #define ELEVATOR_h
 
