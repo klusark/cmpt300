@@ -155,13 +155,14 @@ Plugging in $N = 15$ yields E($D$) = 5.04, which is close to the observed value.
 %using sufficiently few request threads, or sufficiently many. The exact number would need
 %to be found experimentally for the expected input.
 %
-%\subsection{Reversals per Request}
-%Another hardware consideration is the number of times the IO head will need to switch
-%directions after a request is made and before it is serviced. Just like the distance
-%metric, in real hardware it is expected that instructing the IO head to reverse direction
-%would take some time, and it may be a desirable quantity to minimize. Figure
-%\ref{fig:reversal} shows this quantity with respect to the number of request threads.
-%
+\subsection{Reversals per Request}
+Another hardware consideration is the number of times the IO head will need to switch
+directions after a request is made and before it is serviced. Just like the distance
+metric, in real hardware it is expected that instructing the IO head to reverse direction
+would take some time, and it may be a desirable quantity to minimize. Figures
+\ref{fig:turnsElevator} and \ref{fig:turnsSSTF} show this quantity with respect to the 
+number of request threads, for the Elevator and SSTF algorithms, respectively.
+
 %The data shows that the two algorithms perform comparably on this input, and have a
 %profile similar to that of the distance metric (although on a smaller scale). The
 %explanation for this behaviour is the same as that for the distance metric behaviour: when

@@ -1,6 +1,6 @@
 set pointsize 1.5;
 set xl "Number of Request Threads";
-set yl "Average Wait Time per Request";
+set yl "Average Number of Turns per Request";
 set title "Average \# of Direction Reversals per Request (SSTF)"
 set key left
 plot  "./RelativeThreadData_SSTF_1Work.txt" us 1:5 pt 4 ti "1 Servicing Threads";
