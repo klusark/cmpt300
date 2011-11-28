@@ -11,6 +11,7 @@ static int NUM_THREADS = 100;
 static int NUM_WORK_THREADS = 1;
 using namespace std;
 
+// The mutex used so that only one thread calls scanf at a time
 pthread_mutex_t readmutex;
 
 void *Schedule(void* Mon);
@@ -27,6 +28,7 @@ int main(int argc, char *argv[]){
     void* status;
     pthread_mutex_init(&readmutex, 0);
 
+    // Create the worker threads
     for(t=0; t < NUM_WORK_THREADS ; t++){
       rc = pthread_create(&threads[t], NULL, DoNext,  &M);
       if (rc){
@@ -34,6 +36,8 @@ int main(int argc, char *argv[]){
          exit(-1);
       }
     }
+
+    // Create the request threads
     for(t=NUM_WORK_THREADS; t<NUM_THREADS + NUM_WORK_THREADS ; t++){
       rc = pthread_create(&threads[t], NULL, Schedule, & M);
       if (rc){
@@ -41,12 +45,13 @@ int main(int argc, char *argv[]){
          exit(-1);
       }
     }
-    //rc = pthread_create(&threads[NUM_THREADS-1], NULL, DoNext, & M);
 
     if (rc){
      printf("ERROR; return code from pthread_create() is %d\n", rc);
      exit(-1);
     }
+
+    // Wait for all the request threads to finish before exiting the program
     for(t = NUM_WORK_THREADS; t < NUM_THREADS + NUM_WORK_THREADS; ++t){
         rc = pthread_join(threads[t], &status);
     }
@@ -69,15 +74,13 @@ void* Schedule(void* Mon){
             double T;
             int  turns, distance;
             M->Request(track, duration, N, T, turns, distance);
-            //M->NumberOfRequests(N);
             TimingFP = fopen("TimePerRequest.txt", "a");
-            //fprintf(TimingFP, "%d %16.14f\n", N, (clock()/(double)CLOCKS_PER_SEC) -
-            //                            start/(double)CLOCKS_PER_SEC);
             fprintf(TimingFP, "%d %16.14f %d %d\n", N, T, turns, distance);
 
             fclose(TimingFP);
             usleep(rand() % WAIT_TIME);
         } else if (ret == EOF) {
+		// if scanf outputs that there is no more data left stop the thread
 		break;
 	}
     }
