@@ -5,3 +5,7 @@ set title "Average \# of Direction Reversals per Request (Elevator)"
 set key left
 plot  "./RelativeThreadData_Elevator_1Work.txt" us 1:5 pt 4 ti "1 Servicing Threads";
 rep "./RelativeThreadData_Elevator_100Work.txt" us 1:5 pt 4 ti "100 Servicing Threads";
+set term png size 1024,768
+set output 'turnsElevator.png'
+rep
+set term pop

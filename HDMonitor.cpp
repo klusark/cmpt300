@@ -51,16 +51,16 @@ HDMonitor::~HDMonitor(){
  * Creates a new request to the hard drive, and is put on the queue for
  * scheduling.
  */
-void HDMonitor::Request(int track, int duration, int &numRequests, double &T, long
-&turns, long &dist){
+void HDMonitor::Request(int track, int duration, int &numRequests, double &T, int
+&turns, int &dist){
     EnterMonitor();
     T = clock()/(double)CLOCKS_PER_SEC;
     int before = jobsList.size();
-    long startTurns = numTurns;
-    long startDistance = distance;
+    int startTurns = numTurns;
+    int startDistance = distance;
     condition c;
     InitializeCondition(c);
-    request *r = new Elevator(track, time(NULL), duration, this, c);
+    request *r = new SSTF(track, time(NULL), duration, this, c);
 
     RequestWrap wrap;
     wrap.r = r;
@@ -77,11 +77,19 @@ void HDMonitor::Request(int track, int duration, int &numRequests, double &T, lo
         timedwait(c, WAIT_X_NSECONDS);
     }
     T = ( clock()/(double)CLOCKS_PER_SEC) - T;
+    /*
     dist = distance - startDistance;
     turns = numTurns - startTurns;
+    */
+    dist = distanceMap[r] - startDistance;
+    turns = numTurnsMap[r] - startTurns;
+    distanceMap.erase(r);
+    numTurnsMap.erase(r);
+
     //printf("The size is %d\n", jobsList->size() +1);
     numRequests = NumAtRequestComplete[r];
     NumAtRequestComplete.erase(r);
+    delete r;
     LeaveMonitor();
 }
 /*
@@ -112,6 +120,7 @@ void HDMonitor::DoNextJob(){
         nextRequest = min_element(jobsList.begin(), jobsList.end());
 	r = nextRequest->r;
     ++numTurns;
+    //printf("Have turned %ld times.\n", numTurns);
     }
     int delta = r->track - currentTrack;
     if(delta > 15) {
@@ -125,8 +134,10 @@ void HDMonitor::DoNextJob(){
     NumAtRequestComplete[r] = jobsList.size();
     int sleepytime = r->duration;
     jobsList.erase(nextRequest);
+    distanceMap.insert(pair<request*,int>(r, distance));
+    numTurnsMap.insert(pair<request*,int>(r, numTurns));
     signal(r->c);
-    delete r;
+    //delete r;
     usleep(1);
     //usleep(sleepytime); //Do some "work"
     LeaveMonitor();

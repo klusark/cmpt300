@@ -13,7 +13,7 @@ echo $REQUEST_THREADS $WORK_THREADS $result1 $result2 $result3 $result4 >> Relat
 
 let REQUEST_THREADS=REQUEST_THREADS+1
 done
-mv RelativeThreadData.txt RelativeThreadData_Elevator_1Work.txt
+mv RelativeThreadData.txt RelativeThreadData_SSTF_1Work.txt
 
 WORK_THREADS=5
 REQUEST_THREADS=2
@@ -28,7 +28,7 @@ echo $REQUEST_THREADS $WORK_THREADS $result1 $result2 $result3 $result4 >> Relat
 
 let REQUEST_THREADS=REQUEST_THREADS+1
 done
-mv RelativeThreadData.txt RelativeThreadData_Elevator_5Work.txt
+mv RelativeThreadData.txt RelativeThreadData_SSTF_5Work.txt
 
 WORK_THREADS=25
 REQUEST_THREADS=2
@@ -43,7 +43,7 @@ echo $REQUEST_THREADS $WORK_THREADS $result1 $result2 $result3 $result4 >> Relat
 
 let REQUEST_THREADS=REQUEST_THREADS+1
 done
-mv RelativeThreadData.txt RelativeThreadData_Elevator_25Work.txt
+mv RelativeThreadData.txt RelativeThreadData_SSTF_25Work.txt
 
 REQUEST_THREADS=2
 WORK_THREADS=100
@@ -58,4 +58,4 @@ echo $REQUEST_THREADS $WORK_THREADS $result1 $result2 $result3 $result4 >> Relat
 
 let REQUEST_THREADS=REQUEST_THREADS+1
 done
-mv RelativeThreadData.txt RelativeThreadData_Elevator_100Work.txt
+mv RelativeThreadData.txt RelativeThreadData_SSTF_100Work.txt
