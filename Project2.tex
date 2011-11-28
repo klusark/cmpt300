@@ -351,10 +351,11 @@ than 0.8.
 
 \section{Known Bugs}
 \subsection{Too Many Threads Segfaulting}
-If the monitor is  run with a large number of request or servicing threads pthreads
-the program gets frequent segfaults. When trying to debug this we found they are
-almost always in the list size function but we could not track down what causes
-the segfault.
+If the monitor is run with a large number of request or servicing threads, pthreads
+gets frequent segfaults. When trying to debug this we found the segfaults
+almost always occur in the list.size() function but we could not track down what causes
+the segfault. We suspect that that pthreads has difficulty maintaining this many threads,
+and so might be unavoidable.
 
 %The data shows that the two algorithms perform comparably on this input, and have a
 %profile similar to that of the distance metric (although on a smaller scale). The
